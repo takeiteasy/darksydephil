@@ -6,7 +6,8 @@ my @month_days  = qw(31 28 31 30 31 30 31 31 30 31 30 31);
 my @month_names = qw(January February March April May June July August September October November December);
 
 my ($year, $month) = @ARGV or die "wtf";
-my $path_to_logs = sprintf("logs/%s/%s", $year, $month_names[$month - 1]);
+$month = $month_names[$month - 1] if ($month =~ /\d+/);
+my $path_to_logs = sprintf("logs/%s/%s", $year, $month);
 
 my @logs = split(/\n/, `ls $path_to_logs`);
 pop(@logs);
@@ -32,9 +33,6 @@ foreach our $log (@logs) {
 
   $total_cheers /= 100 unless ($total_cheers == 0);
   $total_total_cheers += $total_cheers;
-  print "$log_path: $total_cheers\n";
 }
 
-print "total subs: $num_subs = $sub_money\n";
-print "total cheers: $total_total_cheers\n";
-print sprintf("combined: %s\n", $sub_money + $total_total_cheers);
+print "$sub_money $total_total_cheers";
