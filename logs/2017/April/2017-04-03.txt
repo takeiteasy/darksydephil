@@ -1,0 +1,7 @@
+[2017-04-03 17:28:41 UTC] errnoent: !schedule
+[2017-04-03 17:28:41 UTC] nightbot: No stream for today. Come back Tuesday for the two stream premiere of Persona 5!
+[2017-04-03 18:30:57 UTC] jmon_1985: M
+[2017-04-03 18:31:46 UTC] jmon_1985: !soap
+[2017-04-03 18:31:46 UTC] nightbot: Handmade glycerin soaps and wax tart melts from DSP's girlfriend, Leanna! http://www.etsy.com/shop/theblackcurrant
+[2017-04-03 22:51:29 UTC] popsicolo: !thebot
+[2017-04-03 22:51:29 UTC] nightbot: BOTSONA! MrDestructoid
