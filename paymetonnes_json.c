@@ -23,9 +23,7 @@ char* load_file(const char* path) {
     return data;
 }
 
-char* load_paymetonnes_json() {
-    return load_file("logs/paymetonnes.json");
-}
+#define load_paymetonnes_json() load_file("logs/paymetonnes.json")
 
 long gmt_epoch(const char* str) {
     struct tm ti={0};
@@ -58,10 +56,7 @@ int main(int argc, const char* argv[]) {
     strncpy(final, val, vlen);
     final[vlen] = '\0';
     
-    float money = 0;
-    sscanf(final, "{\"patrons\":%*d,\"earnings\":%f}", &money);
-    
-    printf("%f", money);
+    printf("%s", final);
     
     free(json);
     
