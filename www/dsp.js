@@ -1,4 +1,4 @@
-var data = {"config_2017": {
+var data = { "config_2017": {
     type: 'line',
     data: {
         labels: [ "January", "February", "March", "April", "May", "June" ],
@@ -17,6 +17,5 @@ var data = {"config_2017": {
         }]
     },
     options: options("Twitch (2017)")
-}
-,
- };
+},
+  };

@@ -1,0 +1,50 @@
+*   { margin: 0; padding: 0; }
+
+div {
+    display: block;
+    font-family: Arial, Meiryo, 'MS PGothic', Helvetica, 'Hiragino Kaku Gothic Pro', AppleGothic, sans-serif;
+}
+
+body {
+    background-color: #24292e;
+}
+
+a {
+    color: inherit;
+}
+
+a:hover {
+    color: inherit;
+}
+
+.title {
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    font-size: 72pt;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.subtitle {
+    width: 90%;
+    margin: 0 auto;
+    color: white;
+    text-align: right;
+    margin-top: -10px;
+    padding-bottom: 50px;
+}
+
+.chart-container {
+    position: relative;
+    height:40vh;
+    width:80vw;
+    margin: 0 auto;
+}
+
+.footer {
+    position: absolute;
+    bottom:   0px;
+    padding: 5px;
+    color: #555;
+}
