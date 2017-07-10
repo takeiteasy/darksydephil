@@ -19,9 +19,15 @@ my $twitch_data_config = <<'TWITCH_DATA';
             borderColor: 'rgba(54, 162, 235, 1)',
             fill: true,
             data: ###SUBS###
+        }, {
+            label: "Patreons",
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            fill: true,
+            data: ###PATREONS###
         }]
     },
-    options: options("Twitch (###YEAR###)")
+    options: options("###YEAR###")
 },
 TWITCH_DATA
 
@@ -32,10 +38,14 @@ open my $out_fh, ">", "www/dsp.js" or die "failed opening www/dsp.js";
 print $out_fh "var data = {\n";
 
 foreach our $year (split /\n/, `ls logs/`) {
-    my @months = splice @month_names, 0, `ls logs/$year | wc -l`;
-    my (@cheers, @subs) = ();
+    next unless $year =~ /\d{4}/;
     
-    foreach our $month (@months) {
+    my @months = splice @month_names, 0, `ls logs/$year | wc -l`;
+    my (@cheers, @subs, @patreons) = ();
+    
+    for our $i (0..$#months) {
+        my $month = $months[$i];
+        
         my $path = "logs/$year/$month";
         my @logs = split /\n/, `ls $path`;
         pop(@logs);
@@ -61,16 +71,21 @@ foreach our $year (split /\n/, `ls logs/`) {
         
         push @cheers, $total_total_cheers;
         push @subs, (`cat $path/subscribers.txt | wc -l` * 4.99);
+        my $days = $month_days[$i];
+        my $month_i = $i + 1;
+        push @patreons, (`./paymetonnes "$year-$month_i-$days"`);
     }
     
-    my $month_str  = sprintf("[ \"%s\" ]", join('", "', @months));
-    my $cheers_str = sprintf("[ %s ]", join(', ', @cheers));
-    my $subs_str   = sprintf("[ %s ]", join(', ', @subs));
+    my $month_str    = sprintf("[ \"%s\" ]", join('", "', @months));
+    my $cheers_str   = sprintf("[ %s ]", join(', ', @cheers));
+    my $subs_str     = sprintf("[ %s ]", join(', ', @subs));
+    my $patreons_str = sprintf("[ %s ]", join(', ', @patreons));
     
     my $out = $twitch_data_config;
     $out =~ s/###MONTHS###/$month_str/g;
     $out =~ s/###CHEERS###/$cheers_str/g;
     $out =~ s/###SUBS###/$subs_str/g;
+    $out =~ s/###PATREONS###/$patreons_str/g;
     $out =~ s/###YEAR###/$year/g;
     
     print $out_fh "$out ";

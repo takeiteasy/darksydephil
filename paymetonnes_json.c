@@ -61,7 +61,7 @@ int main(int argc, const char* argv[]) {
     float money = 0;
     sscanf(final, "{\"patrons\":%*d,\"earnings\":%f}", &money);
     
-    printf("%f\n", money);
+    printf("%f", money);
     
     free(json);
     
