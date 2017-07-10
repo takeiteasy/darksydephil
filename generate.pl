@@ -22,14 +22,14 @@ my $twitch_data_config = <<'TWITCH_DATA';
         }]
     },
     options: options("Twitch (###YEAR###)")
-}
+},
 TWITCH_DATA
 
 my @month_days  = qw(31 28 31 30 31 30 31 31 30 31 30 31);
 my @month_names = qw(January February March April May June July August September October November December);
 
 open my $out_fh, ">", "dsp.js" or die "failed opening dsp.js";
-print $out_fh "var data = {";
+print $out_fh "var data = { ";
 
 foreach our $year (split /\n/, `ls logs/`) {
     my @months = splice @month_names, 0, `ls logs/$year | wc -l`;
@@ -73,7 +73,7 @@ foreach our $year (split /\n/, `ls logs/`) {
     $out =~ s/###SUBS###/$subs_str/g;
     $out =~ s/###YEAR###/$year/g;
     
-    print $out_fh "$out,\n";
+    print $out_fh "$out ";
 }
 
 print $out_fh " };";

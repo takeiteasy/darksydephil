@@ -14,7 +14,7 @@ my $url_subs = sprintf("https://overrustlelogs.net/Darksydephil chatlog/%s %s/su
 `wget "$url_subs" $wget_opts`;
 
 for our $count (1..$days) {
-  my $fn  = sprintf("%s-%s-%s.txt", $year, sprintf("%02d", $month), sprintf("%02d", $count));
-  my $url = sprintf("https://overrustlelogs.net/Darksydephil chatlog/%s %s/%s", $month_str, $year, $fn);
+    my $fn  = sprintf("%s-%s-%s.txt", $year, sprintf("%02d", $month), sprintf("%02d", $count));
+    my $url = sprintf("https://overrustlelogs.net/Darksydephil chatlog/%s %s/%s", $month_str, $year, $fn);
   `wget "$url" $wget_opts`;
 }
