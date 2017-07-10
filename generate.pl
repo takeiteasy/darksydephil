@@ -71,7 +71,7 @@ foreach our $year (split /\n/, `ls logs/`) {
         
         push @cheers, $total_total_cheers;
         push @subs, (`cat $path/subscribers.txt | wc -l` * 4.99);
-        my $days = $month_days[$i];
+        my $days = ($i + 1) == 2 ? ($year % 4 == 0 && ($year % 100 != 0 or $year % 400 == 0) ? 29 : 28) : $month_days[$i];
         my $month_i = $i + 1;
         push @patreons, (`./paymetonnes "$year-$month_i-$days"`);
     }
