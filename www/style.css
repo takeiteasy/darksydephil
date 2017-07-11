@@ -44,6 +44,7 @@ a:hover {
 
 .flex-container {
     margin-top: 200px;
+    margin-bottom: 50px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -57,7 +58,7 @@ a:hover {
 }
 
 .footer {
-    margin-top: 50px;
+    margin-top: 175px;
     padding: 5px;
     color: #555;
 }

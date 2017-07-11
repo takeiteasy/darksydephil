@@ -1,5 +1,7 @@
 test.*
 paymetonnes
+*.json
+*.txt
 *.o
 www/dsp.js
 logs/

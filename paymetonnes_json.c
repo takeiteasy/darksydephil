@@ -23,7 +23,7 @@ char* load_file(const char* path) {
     return data;
 }
 
-#define load_paymetonnes_json() load_file("logs/paymetonnes.json")
+#define load_paymetonnes_json() load_file("paymetonnes.json")
 
 long gmt_epoch(const char* str) {
     struct tm ti={0};
