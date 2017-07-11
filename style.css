@@ -30,7 +30,7 @@ a:hover {
     width: 90%;
     margin: 0 auto;
     color: white;
-    text-align: right;
+    text-align: center;
     margin-top: -10px;
     padding-bottom: 50px;
 }
@@ -42,9 +42,22 @@ a:hover {
     margin: 0 auto;
 }
 
+.flex-container {
+    margin-top: 200px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.small-chart-container {
+    width: 500px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 .footer {
-    position: absolute;
-    bottom:   0px;
+    margin-top: 50px;
     padding: 5px;
     color: #555;
 }
