@@ -14,7 +14,7 @@
         <script type="text/javascript" src="paymetonnes.json"></script>
 		<script type="text/javascript" src="dsp.js"></script>
         <script type="text/javascript">
-            var paymetonnes_chart_data = {
+            var paymetonnes_chart_money_config = {
                 type: "line",
                 options: {
                     responsive: true,
@@ -28,10 +28,6 @@
                                 time: {
                                     format: "MM/DD/YYYY HH:mm",
                                     tooltipFormat: "ll HH:mm"
-                                },
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: "Date"
                                 }
                         }],
                         yAxes: [{
@@ -46,10 +42,32 @@
                 }
             };
         
+            var paymetonnes_chart_sub_config = {
+                type: "line",
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: "Patreon Subs"
+                    },
+                    scales: {
+                        xAxes: [{
+                                type: "time",
+                                time: {
+                                    format: "MM/DD/YYYY HH:mm",
+                                    tooltipFormat: "ll HH:mm"
+                                }
+                        }]
+                    }
+                }
+            };
+        
             window.onload = function() {
                 paymetonnes_data = JSON.parse(paymetonnes_data);
                 var all_labels = Object.keys(paymetonnes_data).map(function(k) { return parseInt(k); });
-                paymetonnes_chart_data.data = {
+                var paymetonnes_chart_money = paymetonnes_chart_money_config;
+                var paymetonnes_chart_subs = paymetonnes_chart_sub_config;
+                paymetonnes_chart_money.data = {
                     labels: all_labels,
                     datasets: [{
                                label: "Paytron $$$",
@@ -58,12 +76,21 @@
                                data: Object.keys(paymetonnes_data).map(function(k) { return paymetonnes_data[k]["earnings"] })
                     }]
                 };
-                console.log(paymetonnes_chart_data);
+                paymetonnes_chart_subs.data = {
+                    labels: all_labels,
+                    datasets: [{
+                               label: "Paytron Subs",
+                               backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                               borderColor: 'rgba(255, 159, 64, 1)',
+                               data: Object.keys(paymetonnes_data).map(function(k) { return paymetonnes_data[k]["patrons"] })
+                               }]
+                };
                 
                 var chart_main = new Chart(document.getElementById("chart_main").getContext('2d'), data["config_2017"]);
                 var char_1 = new Chart(document.getElementById("chart_1").getContext('2d'), data["sub_config_2017"]);
                 var char_2 = new Chart(document.getElementById("chart_2").getContext('2d'), data["config_month"]);
-                var paymetonnes_char = new Chart(document.getElementById("chart_paymetonnes").getContext('2d'), paymetonnes_chart_data);
+                var paymetonnes_chart1 = new Chart(document.getElementById("chart_paymetonnes1").getContext('2d'), paymetonnes_chart_money);
+                var paymetonnes_chart2 = new Chart(document.getElementById("chart_paymetonnes2").getContext('2d'), paymetonnes_chart_subs);
             }
         </script>
 	</head>
@@ -72,7 +99,8 @@
             <span><i>The Snort Report</i></span>
         </div>
         <div class="subtitle">
-            <span>"Thanks you, <b>ya fucking worthless humans</b>, for the views!" - Phil Burnell, 2012</span>
+            <span>"Thanks you, <b>ya fucking worthless humans</b>, for the views!" - Phil Burnell, 2012</span><br/><br/>
+            <span class="footer"><b>NOTE:</b> This doesn't include direct-to-paypal donations, youtube revenue, shirt-money, amazon referal links revenue, or whatever else DSP uses to get sweet, sweet money. This is all public data. His real revenue is probably <i>at least</i> triple this.</span>
         </div>
 		<div class="chart-container">
 			<canvas id="chart_main"></canvas>
@@ -82,9 +110,8 @@
             <div class="small-chart-container"><canvas id="chart_2"></canvas></div>
         </div>
         <div class="chart-container">
-            <canvas id="chart_paymetonnes"></canvas>
-        </div>
-        <div class="footer"><b>NOTE:</b> This doesn't include direct-to-paypal donations, youtube revenue, shirt-money, amazon referal links revenue, or whatever else DSP uses to get sweet, sweet money. This is all public data. His real revenue is probably <i>at least</i> triple this.
+            <canvas id="chart_paymetonnes1"></canvas><br/>
+            <canvas id="chart_paymetonnes2"></canvas><br/>
         </div>
 	</body>
 </html>
