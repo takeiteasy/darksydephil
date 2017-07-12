@@ -112,7 +112,7 @@ for our $j (0..$#years) {
     for our $i (0..$#months) {
         my $month = $months[$i];
         my $days = ($i + 1) == 2 ? ($year % 4 == 0 && ($year % 100 != 0 or $year % 400 == 0) ? 29 : 28) : $month_days[$i];
-        $last_month = ($j == $#years - 1 && $i == $#months);
+        $last_month = ($j == $#years && $i == $#months);
         @last_month_cheers = (0)x$days + 1 if ($last_month);
         
         my $path = "logs/$year/$month";
