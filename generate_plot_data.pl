@@ -42,7 +42,7 @@ while (my $line = <$sub_fh>)  {
 }
 close $sub_fh;
 
-open my $out_fh, ">", "data.txt" or die "failed to open data.txt: $!";
+open my $out_fh, ">", "twitch_data.txt" or die "failed to open data.txt: $!";
 for my $i (0..$num_days) {
     my $out = sprintf("%d\t%f\t%f\n", $i + 1, $cheers[$i], $subs[$i]);
     print $out_fh $out;
