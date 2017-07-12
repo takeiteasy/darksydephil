@@ -5,3 +5,7 @@ paymetonnes
 *.o
 www/dsp.js
 logs/
+graphs/
+twitter.conf
+*.svg
+*.png
