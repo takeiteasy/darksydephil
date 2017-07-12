@@ -6,6 +6,6 @@ paymetonnes
 www/dsp.js
 logs/
 graphs/
-twitter.conf
+*.conf
 *.svg
 *.png
