@@ -141,6 +141,8 @@ my @month_names = qw(January February March April May June July August September
 
 open my $out_fh, ">", "www/dsp.js" or die "failed opening www/dsp.js";
 print $out_fh "var data = {\n";
+open my $out2_fh, ">", "www/paypigs.json" or die "failed opening www/paypigs.json";
+print $out2_fh "paypigs_data = '{";
 
 my @months = ();
 my @years = split /\n/, `ls logs/`;
@@ -299,8 +301,15 @@ for our $j (0..$#years) {
     push @pigs_values, $paypigs{$key};
     push @pigs_names, $key;
   }
-  my $pigs_values_str = sprintf("[ %s ]", join(', ', reverse (splice @pigs_values, 0, 30)));
-  my $pigs_names_str  =  sprintf("[ \"%s\" ]", join('", "', reverse (splice @pigs_names, 0, 30)));
+  my $pigs_values_str = sprintf("[ %s ]", join(', ', reverse @pigs_values[0..30]));
+  my $pigs_names_str  =  sprintf("[ \"%s\" ]", join('", "', reverse @pigs_names[0..30]));
+  
+  my $paypig_json = "";
+  for my $key (keys %paypigs) {
+    $paypig_json = "$paypig_json\"$key\": $paypigs{$key},";
+  }
+  chop $paypig_json;
+  print $out2_fh $paypig_json;
   
   my $out4 = $paypig_data_config;
   $out4 =~ s/###YEAR###/$year/g;
@@ -313,3 +322,5 @@ for our $j (0..$#years) {
 
 print $out_fh "};";
 close $out_fh;
+print $out2_fh "}';";
+close $out2_fh;
