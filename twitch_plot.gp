@@ -14,6 +14,5 @@ set key inside bottom right
 set xlabel 'Day'
 set ylabel '$$$$$'
 set xrange [1:31]
-set title 'The Snort Report (Twitch)'
 plot  "twitch_data.txt" using 1:2 title 'Cheer $$$' with lines, "twitch_data.txt" using 1:3 title 'Sub $$$' with lines
 
