@@ -11,7 +11,7 @@ perl generate_plot_data.pl $1 $2
 rm twitch_out.svg
 #rm paymetonnes_out.svg
 
-/usr/local/bin/python3 twitter_bot.py $1 $2
+#/usr/local/bin/python3 twitter_bot.py $1 ${MONTHS[$2 - 1]}
 
 mv twitch_out.png www/archives/$1_$2.png
 rm twitch_data.txt
