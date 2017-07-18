@@ -41,6 +41,15 @@ audio {
     padding-bottom: 50px;
 }
 
+.leaderboard_link {
+  width: 90%;
+  margin: 0 auto;
+  color: white;
+  text-align: center;
+  margin-top: 150px;
+  padding-bottom: 50px;
+}
+
 .leaderboard_link a {
   color: inherit;
   text-decoration: none;
