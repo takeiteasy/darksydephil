@@ -15,4 +15,4 @@ set xlabel 'Day'
 set ylabel '$$$$$'
 set xrange [1:31]
 set title 'The Snort Report (Patreon)'
-plot  "paymetonnes_data.txt" using 1:2 title '$$$' with lines
+plot  "paymetonnes_data.txt" using 1:3 title '$$$' with lines

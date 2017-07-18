@@ -20,8 +20,10 @@ def count_those_cheers(a):
   nsubs = len(subs[a[2]]) if a[2] in subs else 0
   
   cheers = [int(x) for x in re.findall(r'cheer(\d+)', requests.get("https://overrustlelogs.net/Darksydephil%20chatlog/{}%20{}/{}-{}-{}.txt".format(month_names[a[1] - 1], a[0], a[0], prepend_zero(a[1]), prepend_zero(a[2]))).text, re.M) if len(x)]
-
-  test = "#DSP #TheSnortReport for {}-{}-{}: Total Cheers {}, Sum ${}, Average ${} / Total Subs {} (${})".format(a[0], a[1], a[2], len(cheers), sum(cheers) / 100, (sum(cheers) / len(cheers)) / 100 if len(cheers) else 0, nsubs, nsubs * 4.99)
+  
+  sum_cheers = sum(cheers)
+  len_cheers = len(cheers)
+  test = "#DSP #TheSnortReport for {}-{}-{}: Total Cheers {}, Sum ${}, Average ${} / Total Subs {} (${})".format(a[0], a[1], a[2], len_cheers, sum_cheers / 100, (sum_cheers / len_cheers) / 100 if len_cheers else 0, nsubs, nsubs * 4.99)
   
   if (len(test) > 140):
     print("ERROR! \"{}\" too long!".format(test));

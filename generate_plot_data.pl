@@ -35,6 +35,13 @@ foreach my $log (@logs) {
     $cheers[$day - 1] = $total_cheers;
 }
 
+open my $pay_fh, ">", "paymetonnes_data.txt" or die "failed to open data.txt: $!";
+for my $day (1..$num_days + 1) {
+  my ($paypigs, $money) = `./paymetonnes $year-$month-$day` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
+  print $pay_fh "$day $paypigs $money\n";
+}
+close $pay_fh;
+
 open my $sub_fh, "$path_to_logs/subscribers.txt" or die "failed to last months subs: $!";
 while (my $line = <$sub_fh>)  {
     my ($msg_day) = $line =~ m/^\[\d+-\d+\-(\d+)\s.*\]\stwitchnotify:\s.*$/;
