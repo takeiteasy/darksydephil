@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
-#include "3rdparty/js0n.h"
+#include "js0n/src/js0n.h"
 
 char* load_file(const char* path) {
     FILE *file = fopen(path, "rb");
