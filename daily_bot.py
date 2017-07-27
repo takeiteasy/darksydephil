@@ -31,6 +31,7 @@ def count_those_cheers(a):
   
   config = [x[:-1] for x in open('twitter_bot.conf', 'r').readlines() if len(x) > 1];
   print(TwitterAPI(config[0], config[1], config[2], config[3]).request('statuses/update', {'status': test}).status_code)
+  print(test);
 
 def main(arg):
   if re.match(r'20\d{2}-0?\d{1,2}(-0?\d{1,2})?', arg):
