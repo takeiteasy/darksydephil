@@ -98,6 +98,11 @@ audio {
   overflow: hidden;
 }
 
+.archive_cont {
+  background-color: white;
+  padding: 0px 30px 0px 5px;
+}
+
 .leader_cont_inner {
   width: 100%;
   position: relative;
