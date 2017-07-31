@@ -73,7 +73,7 @@ window.onload = function() {
     };
     
     var chart_main = new Chart(document.getElementById("chart_main").getContext('2d'), data["config_2017"]);
-    var chart_1 = new Chart(document.getElementById("chart_1").getContext('2d'), data["sub_config_2017"]);
+    var chart_1 = new Chart(document.getElementById("chart_1").getContext('2d'), data["config_month_paymetonnes"]);
     var chart_2 = new Chart(document.getElementById("chart_2").getContext('2d'), data["config_month"]);
     var chart_3 = new Chart(document.getElementById("chart_3").getContext('2d'), data["paypig_config_2017"]);
     var chart_4 = new Chart(document.getElementById("chart_4").getContext('2d'), data["paypig_config_month"]);

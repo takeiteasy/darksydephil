@@ -45,7 +45,7 @@ my $data_config = <<'DATA_CONFIG';
     scales: {
       yAxes: [{
         ticks: {
-          beginAtZero:true,
+          beginAtZero: false,
           callback: function(value, index, values) {
             return '$' + value;
           }
@@ -202,13 +202,13 @@ for our $j (0..$#years) {
     my $sub_d = $sub_c - $last_subs;
     $last_subs = $sub_c;
     push @subs, ($sub_c * 4.99);
-    push @subs_diff, $sub_d;
+#    push @subs_diff, $sub_d;
     my $month_i = $i + 1;
     my ($patreon_subs, $patreon_money) = `./paymetonnes "$year-$month_i-$days"` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
     push @patreons, $patreon_money;
     my $patreon_d = $patreon_subs - $last_patreons;
     $last_patreons = $patreon_subs;
-    push @patreons_diff, $patreon_d;
+#    push @patreons_diff, $patreon_d;
     
     $last_month_i = $i + 1;
   }
@@ -242,28 +242,40 @@ for our $j (0..$#years) {
   $out =~ s/###YEAR###/$year/g;
   $out =~ s/###TITLE###/Revenue $year/g;
   
-  my $out2 = $sub_data_config;
-  my $sub_diff_str = sprintf("[ \"%s\" ]", join('", "', @subs_diff));
-  my $patreon_diff_str = sprintf("[ \"%s\" ]", join('", "', @patreons_diff));
-  $out2 =~ s/###MONTHS###/$month_str/g;
-  $out2 =~ s/###SUBS###/$sub_diff_str/g;
-  $out2 =~ s/###PATREONS###/$patreon_diff_str/g;
-  $out2 =~ s/###OPTIONS###/\{\}/g;
-  $out2 =~ s/###YEAR###/$year/g;
-  $out2 =~ s/###TITLE###/Difference $year/g;
-  
   my @month_days = (1..$#last_month_cheers + 1);
   my $days_str = sprintf("[ %s ]", join(', ', @month_days));
   my $cheer_str2 = sprintf("[ %s ]", join(', ', @last_month_cheers));
   my $month_name_str = $months[$last_month_i - 1];
   
-  #my (@lm_patreon_subs, @lm_patreon_money) = ();
-  #foreach my $month_day (@month_days) {
-  #    my ($patreon_subs, $patreon_money) = `./paymetonnes "$year-$last_month_i-$month_day"` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
-  #    push @lm_patreon_subs, $patreon_subs; # Unused
-  #    push @lm_patreon_money, $patreon_money;
-  #}
-  #my $lm_patreon_money_str = sprintf("[ %s ]", join(', ', @lm_patreon_money));
+  my (@lm_patreon_subs, @lm_patreon_money) = ();
+  foreach my $month_day (@month_days) {
+      my ($patreon_subs, $patreon_money) = `./paymetonnes "$year-$last_month_i-$month_day"` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
+      push @lm_patreon_subs, $patreon_subs; # Unused
+      push @lm_patreon_money, $patreon_money;
+  }
+  my $lm_patreon_money_str = sprintf("[ %s ]", join(', ', @lm_patreon_money));
+
+  my $last_patreon_money_dataset = $dataset;
+  $last_patreon_money_dataset =~ s/###LABEL###/Patreon/g;
+  $last_patreon_money_dataset =~ s/###BGCOL###/rgba(255, 206, 86, 0.2)/g;
+  $last_patreon_money_dataset =~ s/###BORDERCOL###/rgba(255, 206, 86, 1)/g;
+  $last_patreon_money_dataset =~ s/###DATA###/$lm_patreon_money_str/g;
+  
+  my $out2 = $data_config;
+  $out2 =~ s/###LABELS###/$days_str/g;
+  $out2 =~ s/###DATASETS###/$last_patreon_money_dataset/g;
+  $out2 =~ s/###YEAR###/month_paymetonnes/g;
+  $out2 =~ s/###TITLE###/$month_name_str/g;
+  
+#  my $out2 = $sub_data_config;
+#  my $sub_diff_str = sprintf("[ \"%s\" ]", join('", "', @subs_diff));
+#  my $patreon_diff_str = sprintf("[ \"%s\" ]", join('", "', @patreons_diff));
+#  $out2 =~ s/###MONTHS###/$month_str/g;
+#  $out2 =~ s/###SUBS###/$sub_diff_str/g;
+#  $out2 =~ s/###PATREONS###/$patreon_diff_str/g;
+#  $out2 =~ s/###OPTIONS###/\{\}/g;
+#  $out2 =~ s/###YEAR###/$year/g;
+#  $out2 =~ s/###TITLE###/Difference $year/g;
   
   my @sub_days = (0)x$#last_month_cheers;
   open my $sub_fh, "logs/$year/$month_name_str/subscribers.txt" or die "failed to last months subs: $!";
@@ -285,12 +297,6 @@ for our $j (0..$#years) {
   $last_subs_dataset =~ s/###BGCOL###/rgba(54, 162, 235, 0.2)/g;
   $last_subs_dataset =~ s/###BORDERCOL###/rgba(54, 162, 235, 1)/g;
   $last_subs_dataset =~ s/###DATA###/$sub_days_str/g;
-  
-  #my $last_patreon_money_dataset = $dataset;
-  #$last_patreon_money_dataset =~ s/###LABEL###/Patreon/g;
-  #$last_patreon_money_dataset =~ s/###BGCOL###/rgba(255, 206, 86, 0.2)/g;
-  #$last_patreon_money_dataset =~ s/###BORDERCOL###/rgba(255, 206, 86, 1)/g;
-  #$last_patreon_money_dataset =~ s/###DATA###/$lm_patreon_money_str/g;
   
   my $out3 = $data_config;
   $out3 =~ s/###LABELS###/$days_str/g;
