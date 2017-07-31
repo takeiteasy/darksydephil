@@ -178,9 +178,11 @@ for our $j (0..$#years) {
       while (my $line = <$fh>)  {
         ($user) = $line =~ m/\[\d+-\d+-\d+\s\d+:\d+:\d+\sUTC\]\s(\S+):/;
         if ($line =~ /cheer(\d+)/) {
-          my @matches = $line =~ m/\scheer(\d+)\s/g;
+          my @matches = $line =~ m/[?<=\s]cheer(\d+)(?!\S)/g;
           if (@matches) {
-            my $line_cheers = unpack "%123d*", pack("d*", @matches);
+            my $line_cheers = 0;
+            $line_cheers += int($_) for @matches;
+            
             $total_cheers += $line_cheers;
             $paypigs{$user} += $line_cheers / 100;
             $paypigs_month{$user} += $line_cheers / 100 if ($last_month);
