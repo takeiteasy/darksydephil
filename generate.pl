@@ -56,39 +56,39 @@ my $data_config = <<'DATA_CONFIG';
 },
 DATA_CONFIG
 
-my $sub_data_config = <<'SUB_DATA_CONFIG';
-"sub_config_###YEAR###": {
-  type: 'bar',
-  data: {
-    labels: ###MONTHS###,
-    datasets: [{
-      label: "Twitch Subs",
-      backgroundColor: 'rgba(153, 102, 255, 0.2)',
-      borderColor: 'rgba(153, 102, 255, 1)',
-      borderWidth: 1,
-      fill: true,
-      data: ###SUBS###
-    }, {
-      label: "Patreons",
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1,
-      fill: true,
-      data: ###PATREONS###
-    }]
-  },
-  options: {
-    title: {
-      display: true,
-      text: "###TITLE###"
-    },
-    tooltips: {
-      mode: 'index',
-      intersect: false,
-    }
-  }
-},
-SUB_DATA_CONFIG
+#my $sub_data_config = <<'SUB_DATA_CONFIG';
+#"sub_config_###YEAR###": {
+#  type: 'bar',
+#  data: {
+#    labels: ###MONTHS###,
+#    datasets: [{
+#      label: "Twitch Subs",
+#      backgroundColor: 'rgba(153, 102, 255, 0.2)',
+#      borderColor: 'rgba(153, 102, 255, 1)',
+#      borderWidth: 1,
+#      fill: true,
+#      data: ###SUBS###
+#    }, {
+#      label: "Patreons",
+#      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+#      borderColor: 'rgba(75, 192, 192, 1)',
+#      borderWidth: 1,
+#      fill: true,
+#      data: ###PATREONS###
+#    }]
+#  },
+#  options: {
+#    title: {
+#      display: true,
+#      text: "###TITLE###"
+#    },
+#    tooltips: {
+#      mode: 'index',
+#      intersect: false,
+#    }
+#  }
+#},
+#SUB_DATA_CONFIG
 
 my $paypig_data_config = <<'PAYPIG_DATA';
 "paypig_config_###YEAR###": {
@@ -199,15 +199,15 @@ for our $j (0..$#years) {
     
     push @cheers, $total_total_cheers;
     my $sub_c = int(`cat $path/subscribers.txt | wc -l`);
-    my $sub_d = $sub_c - $last_subs;
-    $last_subs = $sub_c;
+#    my $sub_d = $sub_c - $last_subs;
+#    $last_subs = $sub_c;
     push @subs, ($sub_c * 4.99);
 #    push @subs_diff, $sub_d;
     my $month_i = $i + 1;
     my ($patreon_subs, $patreon_money) = `./paymetonnes "$year-$month_i-$days"` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
     push @patreons, $patreon_money;
-    my $patreon_d = $patreon_subs - $last_patreons;
-    $last_patreons = $patreon_subs;
+#    my $patreon_d = $patreon_subs - $last_patreons;
+#    $last_patreons = $patreon_subs;
 #    push @patreons_diff, $patreon_d;
     
     $last_month_i = $i + 1;
