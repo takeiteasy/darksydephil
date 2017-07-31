@@ -154,7 +154,7 @@ for our $j (0..$#years) {
   
   @months = splice @month_names, 0, `ls logs/$year | wc -l`;
   my (@cheers, @subs, @patreons, @subs_diff, @patreons_diff, @last_month_cheers, @last_month_subs) = ();
-  my %paypigs;
+  my (%paypigs, %paypigs_month);
   
   # $year == 2017 ? 0 : get last years
   my $last_subs = 0;
@@ -178,10 +178,12 @@ for our $j (0..$#years) {
       while (my $line = <$fh>)  {
         ($user) = $line =~ m/\[\d+-\d+-\d+\s\d+:\d+:\d+\sUTC\]\s(\S+):/;
         if ($line =~ /cheer(\d+)/) {
-          my @matches = $line =~ m/cheer(\d+)/g;
+          my @matches = $line =~ m/\scheer(\d+)\s/g;
           if (@matches) {
-            $total_cheers += unpack "%123d*", pack("d*", @matches);
-            $paypigs{$user} += $total_cheers / 100;
+            my $line_cheers = unpack "%123d*", pack("d*", @matches);
+            $total_cheers += $line_cheers;
+            $paypigs{$user} += $line_cheers / 100;
+            $paypigs_month{$user} += $line_cheers / 100 if ($last_month);
           }
         }
       }
@@ -317,7 +319,21 @@ for our $j (0..$#years) {
   $out4 =~ s/###MONEY###/$pigs_values_str/g;
   $out4 =~ s/###TITLE###/Cheer-leaderboards (Total)/g;
   
-  print $out_fh "$out $out2 $out3 $out4";
+  (@pigs_values, @pigs_names) = ();
+  for my $key (sort { $paypigs_month{$b} <=> $paypigs_month{$a} } keys %paypigs_month) {
+    push @pigs_values, $paypigs_month{$key};
+    push @pigs_names, $key;
+  }
+  $pigs_values_str = sprintf("[ %s ]", join(', ', reverse @pigs_values[0..30]));
+  $pigs_names_str  =  sprintf("[ \"%s\" ]", join('", "', reverse @pigs_names[0..30]));
+  
+  my $out5 = $paypig_data_config;
+  $out5 =~ s/###YEAR###/month/g;
+  $out5 =~ s/###TITLE###/Cheer-leaderboards ($month_name_str)/g;
+  $out5 =~ s/###NAMES###/$pigs_names_str/g;
+  $out5 =~ s/###MONEY###/$pigs_values_str/g;
+  
+  print $out_fh "$out $out2 $out3 $out4 $out5";
 }
 
 print $out_fh "};";

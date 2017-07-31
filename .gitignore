@@ -9,4 +9,6 @@ graphs/
 *.conf
 *.svg
 *.png
-www/
+www/archives/
+www/archives/*.png
+www/*.json
