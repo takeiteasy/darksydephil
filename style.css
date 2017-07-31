@@ -46,7 +46,7 @@ audio {
   margin: 0 auto;
   color: white;
   text-align: center;
-  margin-top: 150px;
+  margin-top: 250px;
   padding-bottom: 50px;
 }
 
@@ -85,6 +85,10 @@ audio {
 .large-chart-container {
   margin-top: 50px;
   margin-bottom: 120px;
+}
+
+#chart_4 {
+  margin-top: 90px;
 }
 
 .footer {
