@@ -103,6 +103,7 @@ audio {
 }
 
 .archive_cont {
+  width: 1290px !important;
   background-color: white;
   padding: 0px 30px 0px 5px;
 }

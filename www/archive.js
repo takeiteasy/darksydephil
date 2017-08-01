@@ -6,8 +6,8 @@ window.onload = function() {
   
   for (var i = 2017; i <= year; i++) {
     for (var j = 1; j <= (i == year ? month : 12); j++) {
-      var k = "archives/" + i + "_" + (j < 10 ? "0" + j : j) + ".png";
-      cont.innerHTML += "<img src='" + k + "' />";
+      var k = "archives/" + i + "_" + (j < 10 ? "0" + j : j);
+      cont.innerHTML += "<img src='" + k + "_t.png' /> <img src='" + k + "_p.png' /> ";
     }
   }
 }
