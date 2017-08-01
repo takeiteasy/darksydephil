@@ -9,7 +9,7 @@ var data = {
   borderColor: 'rgba(255, 99, 132, 1)',
   borderWidth: 1,
   fill: true,
-  data: [ 504.6, 455.71, 1310.36, 1822.6, 1650.28, 1165.03, 1337.16 ]
+  data: [ 510.84, 463.43, 1346.97, 1886.65, 1698.25, 1228.75, 1449.47 ]
 },
 {
   label: "Subscribers",
@@ -17,7 +17,7 @@ var data = {
   borderColor: 'rgba(54, 162, 235, 1)',
   borderWidth: 1,
   fill: true,
-  data: [ 309.38, 279.44, 983.03, 598.8, 818.36, 893.21, 873.25 ]
+  data: [ 309.38, 279.44, 983.03, 598.8, 818.36, 893.21, 913.17 ]
 },
 {
   label: "Patreons",
@@ -25,7 +25,7 @@ var data = {
   borderColor: 'rgba(255, 206, 86, 1)',
   borderWidth: 1,
   fill: true,
-  data: [ 1413.57, 1354.28, 1211.99, 1125.45, 1114.65, 1180.62,  ]
+  data: [ 1413.57, 1354.28, 1211.99, 1125.45, 1114.65, 1180.62, 1017.68 ]
 },
 ]
   },
@@ -73,7 +73,7 @@ var data = {
   borderColor: 'rgba(255, 206, 86, 1)',
   borderWidth: 1,
   fill: true,
-  data: [ 1137.61, 1137.61, 1138.51, 1004.51, 1013.44, 1017.91, 1017.91, 982.18, 990.11, 999.04, 999.04, 999.04, 999.93, 999.93, 999.93, 1004.29, 1004.29, 1022.15, 1022.15, 1022.15, 1017.68, 1004.29, 1005.18, 1005.18, 1006.97, 1011.43, 1011.43, 998.93, 998.93, 996.25,  ]
+  data: [ 1137.61, 1137.61, 1138.51, 1004.51, 1013.44, 1017.91, 1017.91, 982.18, 990.11, 999.04, 999.04, 999.04, 999.93, 999.93, 999.93, 1004.29, 1004.29, 1022.15, 1022.15, 1022.15, 1017.68, 1004.29, 1005.18, 1005.18, 1006.97, 1011.43, 1011.43, 998.93, 998.93, 996.25, 1017.68 ]
 },
 ]
   },
@@ -121,7 +121,7 @@ var data = {
   borderColor: 'rgba(255, 99, 132, 1)',
   borderWidth: 1,
   fill: true,
-  data: [ 43.27, 34.43, 10.16, 68.6, 36.26, 81.65, 84.88, 192.26, 67.25, 94.98, 39.09, 9.63, 0, 3.3, 0.64, 5.65, 43.08, 97.25, 9.26, 46.38, 46.55, 70.71, 13.6, 25.15, 47.99, 42.66, 27.95, 36.85, 44.89, 7.59, 5.2 ]
+  data: [ 45.31, 35.65, 11.2, 69.75, 36.56, 99.95, 85.25, 196.71, 79.35, 96.08, 41.85, 9.63, 0, 3.3, 1.2, 5.65, 48.13, 101.25, 9.46, 49.88, 48.87, 93.87, 13.9, 27.44, 49.88, 44.71, 28.6, 38.14, 55.29, 7.64, 14.97 ]
 },
 {
   label: "Subscribers",
@@ -129,7 +129,7 @@ var data = {
   borderColor: 'rgba(54, 162, 235, 1)',
   borderWidth: 1,
   fill: true,
-  data: [ 29.94, 49.9, 39.92, 34.93, 44.91, 29.94, 84.83, 74.85, 64.87, 4.99, 19.96, 0, 0, 0, 0, 0, 74.85, 49.9, 29.94, 19.96, 29.94, 14.97, 4.99, 19.96, 14.97, 9.98, 9.98, 34.93, 39.92, 29.94, 9.98 ]
+  data: [ 29.94, 49.9, 39.92, 34.93, 44.91, 29.94, 84.83, 74.85, 64.87, 4.99, 19.96, 0, 0, 0, 0, 0, 74.85, 49.9, 29.94, 19.96, 29.94, 14.97, 4.99, 19.96, 14.97, 9.98, 9.98, 34.93, 39.92, 29.94, 49.9 ]
 },
 ]
   },
@@ -170,14 +170,14 @@ var data = {
  "paypig_config_2017": {
   type: 'bar',
   data: {
-    labels: [ "werktwerk", "fluttershy1970", "the_g4spharaoh", "insomniaticmeat", "thatanonymouse", "jamesdiyonyoutube", "flyeaglesfly01", "thatsamoankid", "planetjeff2", "availableusername888", "jack_spartacus", "yamenuj97", "errnoent", "retrothicc2b", "retrocerberus", "tantamounter", "darthradovanviking", "thirdeyethethird", "goldencolts", "flybeast", "spazz3", "wubegg", "mojosd", "eternia_forever", "kingjezal", "deep_drive", "mr_vidar_viking", "dooley258", "nolbert87", "howlinthedeep", "darthvidarviking" ],
+    labels: [ "the_g4spharaoh", "msmonique", "insomniaticmeat", "the_abstract1", "thatanonymouse", "jamesdiyonyoutube", "flyeaglesfly01", "thatsamoankid", "planetjeff2", "availableusername888", "jack_spartacus", "yamenuj97", "errnoent", "retrothicc2b", "retrocerberus", "tantamounter", "darthradovanviking", "thirdeyethethird", "flybeast", "spazz3", "goldencolts", "wubegg", "mojosd", "eternia_forever", "deep_drive", "kingjezal", "mr_vidar_viking", "dooley258", "nolbert87", "howlinthedeep", "darthvidarviking" ],
     datasets: [{
       label: "Total Cheers",
       backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
       borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
       borderWidth: 1,
       fill: true,
-      data: [ 45, 45, 46.6, 53.65, 57.5300000000001, 69.85, 72, 72.25, 80.55, 85, 98.0500000000001, 100, 101, 104.45, 104.8, 105.93, 130.16, 136.92, 152.72, 155, 156.14, 181.65, 194.96, 233.15, 243.09, 259.96, 441.9, 502.53, 527, 534.63, 589.49 ]
+      data: [ 46.6, 48, 53.65, 62, 62.9200000000001, 69.85, 72, 72.25, 80.55, 85, 98.0500000000001, 100, 101, 104.45, 104.8, 108.93, 134.61, 136.92, 155, 157.14, 158.9, 181.65, 194.96, 233.6, 260.96, 296.19, 451.18, 521.53, 527, 548.25, 631.66 ]
     }]
   },
   options: {
@@ -213,14 +213,14 @@ var data = {
  "paypig_config_month": {
   type: 'bar',
   data: {
-    labels: [ "the_abstract1", "hyperior21", "baronbonghits6969", "bigtone995", "isukfartsoutofaskunksass", "mrpapaveraceae", "atlastelamon9", "sensationalmedia", "gamemaster2003isdead", "silentgeneral", "availableusername888", "aaronisbuddha", "yusuke14k", "6th_moral", "r2df", "adxmlikkleman", "jack_spartacus", "smartweirdo95", "griffinbox", "eternia_forever", "esteglefire", "flyeaglesfly01", "werktwerk", "msmonique", "planetjeff2", "thatanonymouse", "yamenuj97", "goldencolts", "darthradovanviking", "kingjezal", "dooley258" ],
+    labels: [ "cbvcalifloydian", "baronbonghits6969", "isukfartsoutofaskunksass", "mrpapaveraceae", "bigtone995", "sensationalmedia", "gamemaster2003isdead", "availableusername888", "6th_moral", "the_abstract1", "r2df", "adxmlikkleman", "yusuke14k", "jack_spartacus", "silentgeneral", "smartweirdo95", "atlastelamon9", "griffinbox", "eternia_forever", "aaronisbuddha", "flyeaglesfly01", "esteglefire", "werktwerk", "planetjeff2", "msmonique", "thatanonymouse", "yamenuj97", "goldencolts", "darthradovanviking", "kingjezal", "dooley258" ],
     datasets: [{
       label: "Total Cheers",
       backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
       borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
       borderWidth: 1,
       fill: true,
-      data: [ 8, 8.29999999999999, 8.5, 8.5, 8.69999999999999, 9, 10, 10, 10.4, 11, 11.1, 12, 12, 12.84, 14.19, 15, 15.25, 17, 22, 23, 27, 27, 30, 38, 39.15, 57.5300000000001, 100, 101.47, 110.66, 129.09, 221.53 ]
+      data: [ 8.5, 8.5, 8.69999999999999, 9, 9.5, 10, 10.4, 11.1, 12.94, 14, 14.19, 15, 15, 15.25, 16, 17, 20, 22, 23, 24, 27, 29, 30, 39.15, 44, 62.9200000000001, 100, 107.65, 115.11, 156.19, 230.53 ]
     }]
   },
   options: {
