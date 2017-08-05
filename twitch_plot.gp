@@ -1,4 +1,4 @@
-#!/usr/local/bin/gnuplot
+#!/usr/bin/gnuplot
 
 set terminal svg size 640,480 enhanced fname 'arial'  fsize 10 butt solid
 set output 'twitch_out.svg'
