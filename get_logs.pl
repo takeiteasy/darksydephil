@@ -8,7 +8,7 @@ my @month_names = qw(January February March April May June July August September
 my ($year, $month) = @ARGV or die "wtf";
 my $days = $month == 2 ? ($year % 4 == 0 && ($year % 100 != 0 or $year % 400 == 0) ? 29 : 28) : $month_days[$month - 1];
 my $month_str = $month_names[$month - 1];
-my $wget = "/usr/local/bin/wget";
+my $wget = "/usr/bin/wget";
 my $wget_opts = "-N -P logs/$year/$month_str";
 
 my $url_subs = sprintf("https://overrustlelogs.net/Darksydephil chatlog/%s %s/subscribers.txt", $month_str, $year);
