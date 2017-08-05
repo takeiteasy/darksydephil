@@ -19,4 +19,4 @@ if day == 1:
 else:
     day -= 1
 
-os.system("python3 {} '{}-{}-{}'".format(os.path.expanduser('~/darksydephil/daily_bot.py', year, month, day)))
+os.system("python3 {} '{}-{}-{}'".format(os.path.expanduser('~/darksydephil/daily_bot.py'), year, month, day))

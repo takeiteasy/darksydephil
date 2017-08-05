@@ -11,4 +11,4 @@ if month == 1:
 else:
     month -= 1
 
-os.system("sh {} {} {}".format(os.path.expanduser('~/darksydephil/update.sh', year, month if month > 9 else "0" + str(month)))
+os.system("sh {} {} {}".format(os.path.expanduser('~/darksydephil/update.sh'), year, month if month > 9 else "0" + str(month)))
