@@ -40,7 +40,7 @@ foreach my $log (@logs) {
 open my $pay_fh, ">", "paymetonnes_data.txt" or die "failed to open data.txt: $!";
 for my $day (1..$num_days + 1) {
   my ($paypigs, $money) = `./paymetonnes $year-$month-$day` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
-  print $pay_fh "$day $paypigs $money\n";
+  print $pay_fh "$day $paypigs $money 1125\n";
 }
 close $pay_fh;
 
