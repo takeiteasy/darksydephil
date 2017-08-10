@@ -19,7 +19,7 @@ def count_those_cheers(a):
   subs = { int(k):  list(v) for k, v in itertools.groupby(requests.get("https://overrustlelogs.net/Darksydephil%20chatlog/{}%20{}/subscribers.txt".format(month_name, a[0])).text.splitlines(), key=lambda x: re.search(r'\[\d+-\d+-(\d+)', x).group(1)) }
   nsubs = len(subs[a[2]]) if a[2] in subs else 0
   
-  cheers = [int(x) for x in re.findall(r'cheer(\d+)', requests.get("https://overrustlelogs.net/Darksydephil%20chatlog/{}%20{}/{}-{}-{}.txt".format(month_names[a[1] - 1], a[0], a[0], prepend_zero(a[1]), prepend_zero(a[2]))).text, re.M) if len(x)]
+  cheers = [int(x) for x in re.findall(r'[?<=\s]cheer(\d+)(?!\S)', requests.get("https://overrustlelogs.net/Darksydephil%20chatlog/{}%20{}/{}-{}-{}.txt".format(month_names[a[1] - 1], a[0], a[0], prepend_zero(a[1]), prepend_zero(a[2]))).text, re.M) if len(x)]
   
   sum_cheers = sum(cheers)
   len_cheers = len(cheers)
