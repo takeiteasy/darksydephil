@@ -138,6 +138,10 @@ PAYPIG_DATA
 
 my @month_days  = qw(31 28 31 30 31 30 31 31 30 31 30 31);
 my @month_names = qw(January February March April May June July August September October November December);
+my %conv_sub = (
+  "4.99"  => 2.5,
+  "9.99"  => 6.66,
+  "24.99" => 17.5);
 
 open my $out_fh, ">", "www/dsp.js" or die "failed opening www/dsp.js";
 print $out_fh "var data = {\n";
@@ -200,10 +204,18 @@ for our $j (0..$#years) {
     }
     
     push @cheers, $total_total_cheers;
-    my $sub_c = int(`cat $path/subscribers.txt | wc -l`);
+    my $sub_fp = "$path/subscribers.txt";
+    open my $sub_fh, $sub_fp or die "faileed to open $sub_fp: $!";
+    my $sub_total = 0.0;
+    my $sub_c     = 0;
+    while (my $line = <$sub_fh>) {
+      my ($sub_m) = $line =~ m/\$([-+]?[0-9]*\.?[0-9]+)/;
+      $sub_total += ($sub_m ? $conv_sub{$sub_m} : 2.5);
+      $sub_c += 1;
+    }
 #    my $sub_d = $sub_c - $last_subs;
 #    $last_subs = $sub_c;
-    push @subs, ($sub_c * 4.99);
+    push @subs, $sub_total;
 #    push @subs_diff, $sub_d;
     my $month_i = $i + 1;
     my ($patreon_subs, $patreon_money) = `./paymetonnes "$year-$month_i-$days"` =~ m/{"patrons":(\d+),"earnings":([-+]?[0-9]*\.?[0-9]+)}/g;
@@ -283,7 +295,8 @@ for our $j (0..$#years) {
   open my $sub_fh, "logs/$year/$month_name_str/subscribers.txt" or die "failed to last months subs: $!";
   while (my $line = <$sub_fh>)  {
     my ($msg_day) = $line =~ m/^\[\d+-\d+\-(\d+)\s.*\]\stwitchnotify:\s.*$/;
-    $sub_days[int($msg_day) - 1] += 4.99;
+    my ($sub_m) = $line =~ m/\$([-+]?[0-9]*\.?[0-9]+)/;
+    $sub_days[int($msg_day) - 1] += ($sub_m ? $conv_sub{$sub_m} : 2.5);
   }
   close $sub_fh;
   my $sub_days_str = sprintf("[ %s ]", join(', ', @sub_days));

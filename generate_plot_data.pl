@@ -7,7 +7,7 @@ my @month_names = qw(January February March April May June July August September
 my %conv_sub = (
   "4.99"  => 2.5,
   "9.99"  => 6.66,
-  "29.99" => 17.5);
+  "24.99" => 17.5);
 
 my ($year, $month) = @ARGV or die "wtf";
 my $num_days = ($month == 2 ? ($year % 4 == 0 && ($year % 100 != 0 or $year % 400 == 0) ? 29 : 28) : $month_days[$month - 1]) - 1;
