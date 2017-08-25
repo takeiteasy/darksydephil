@@ -4,6 +4,10 @@ use warnings;
 
 my @month_days  = qw(31 28 31 30 31 30 31 31 30 31 30 31);
 my @month_names = qw(January February March April May June July August September October November December);
+my %conv_sub = (
+  "4.99"  => 2.5,
+  "9.99"  => 6.66,
+  "29.99" => 17.5);
 
 my ($year, $month) = @ARGV or die "wtf";
 my $num_days = ($month == 2 ? ($year % 4 == 0 && ($year % 100 != 0 or $year % 400 == 0) ? 29 : 28) : $month_days[$month - 1]) - 1;
@@ -47,7 +51,8 @@ close $pay_fh;
 open my $sub_fh, "$path_to_logs/subscribers.txt" or die "failed to last months subs: $!";
 while (my $line = <$sub_fh>)  {
   my ($msg_day) = $line =~ m/^\[\d+-\d+\-(\d+)\s.*\]\stwitchnotify:\s.*$/;
-  $subs[int($msg_day) - 1] += 4.99;
+  my ($sub_m) = $line =~ m/\$([-+]?[0-9]*\.?[0-9]+)/;
+  $subs[int($msg_day) - 1] += ($sub_m ? $conv_sub{$sub_m} : 2.5);
 }
 close $sub_fh;
 
