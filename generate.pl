@@ -182,7 +182,7 @@ for our $j (0..$#years) {
       while (my $line = <$fh>)  {
         ($user) = $line =~ m/\[\d+-\d+-\d+\s\d+:\d+:\d+\sUTC\]\s(\S+):/;
         if ($line =~ /cheer(\d+)/) {
-          my @matches = $line =~ m/[?<=\s]cheer(\d+)(?!\S)/g;
+          my @matches = $line =~ m/[?<=\s](?:kappa|kreygasm|swiftrage|muxy|streamlab|failfish|vohiyo|pjsalt|trihard|notlikethis|4head|mrdestructoid|bday|cheer)(\d+)(?!\S)/g;
           if (@matches) {
             my $line_cheers = 0;
             $line_cheers += int($_) for @matches;

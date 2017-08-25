@@ -25,7 +25,7 @@ def count_those_cheers(a):
     sub_m.append(n)
   nsubs = len(subs[a[2]]) if a[2] in subs else 0
   
-  cheers = [int(x) for x in re.findall(r'[?<=\s]cheer(\d+)(?!\S)', requests.get("https://overrustlelogs.net/Darksydephil%20chatlog/{}%20{}/{}-{}-{}.txt".format(month_names[a[1] - 1], a[0], a[0], prepend_zero(a[1]), prepend_zero(a[2]))).text, re.M) if len(x)]
+  cheers = [int(x) for x in re.findall(r'[?<=\s](?:kappa|kreygasm|swiftrage|muxy|streamlab|failfish|vohiyo|pjsalt|trihard|notlikethis|4head|mrdestructoid|bday|cheer)(\d+)(?!\S)', requests.get("https://overrustlelogs.net/Darksydephil%20chatlog/{}%20{}/{}-{}-{}.txt".format(month_names[a[1] - 1], a[0], a[0], prepend_zero(a[1]), prepend_zero(a[2]))).text, re.M) if len(x)]
   
   sum_cheers = sum(cheers)
   len_cheers = len(cheers)
