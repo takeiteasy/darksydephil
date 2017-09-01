@@ -40,7 +40,7 @@ send("JOIN #darksydephil")
 split_msg_buf = None
 while True:
     try:
-        txt = irc.recv(512).decode().split('\r\n')
+        txt = irc.recv(512).decode('utf-8').split('\r\n')
     except KeyboardInterrupt as e:
         break
     except:
@@ -63,7 +63,7 @@ while True:
                 if ts:
                     update_log_fh(ts[1] if len(ts) >= 2 else ts[0])
                 if log_fh:
-                    log_fh.write(msg + "\n")
+                    log_fh.write((msg + "\n").encode('utf-8'))
             elif msg[:4] == "PING":
                 send("PO" + msg[2:])
 
