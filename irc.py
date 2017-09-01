@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys, os, errno, re, socket, random
+import sys, os, errno, re, socket, random, time
 
 user = 'justinfan' + ''.join(random.choice("0123456789") for _ in range(10))
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,7 +16,7 @@ def update_log_fh(ts):
         if log_fh:
             log_fh.close()
 
-        if os.path.exists(log_name):
+        if not os.path.exists(log_name):
             if not os.path.exists(os.path.dirname(log_name)):
                 try:
                     os.makedirs(os.path.dirname(log_name), exist_ok=True)
@@ -59,12 +59,11 @@ while True:
     for msg in txt:
         if msg:
             if msg[:3] == "@ba": # All the interesting messages start with "@ba"
-                ts = regex.findall(msg)
+                ts = ts_re.findall(msg)
                 if ts:
                     update_log_fh(ts[1] if len(ts) >= 2 else ts[0])
                 if log_fh:
-                    log_fh.write(msg)
-                print(msg)
+                    log_fh.write(msg + "\n")
             elif msg[:4] == "PING":
                 send("PO" + msg[2:])
 
