@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type"        content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Style-Type"  content="text/css">
+		<meta http-equiv="Content-Script-Type" content="text/javascript">
+
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<title>The Snort Report</title>
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+		<script type="text/javascript" src="data.json"></script>
+		<script type="text/javascript">
+var month_days = [31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function is_leap_year(y) {
+  return ((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0);
+}
+
+function days_in_month(y, m) {
+    var i = months.indexOf(m);
+    return (i == 1 ? (is_leap_year(y) ? 29 : 28) : month_days[i]);
+}
+
+window.onload = function() {
+	data   = JSON.parse(data);
+	data_p = JSON.parse(dataJson);
+
+	var dates = [];
+	var bits  = [];
+	var subs  = [];
+	var pays  = [];
+	for (var a in data) {
+		for (var b in data[a]) {
+			var tmp_bits = [], tmp_subs = [];
+			for (var c in data[a][b]) {
+				tmp_bits.push(data[a][b][c]['bits'] / 100);
+				tmp_subs.push(data[a][b][c]['subs']);
+			}
+			dates.push(b + ", " + a);
+			bits.push(tmp_bits.reduce((a, b) => a + b, 0));
+			subs.push(tmp_subs.reduce((a, b) => a + b, 0));
+			
+			var p_obj = data_p[new Date(a + "-" + b + "-" + days_in_month(a, b) + " 00:00:00 GMT +00:00").getTime().toString()];
+			if (typeof(p_obj) != "undefined")
+			    pays.push(p_obj['earnings']);
+		}
+	}
+	if (pays.length < bits.length)
+	    pays.push(0); // Temporary
+
+	var chart_main = new Chart(document.getElementById("chart_main").getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: dates,
+			datasets: [{
+				label: "Cheers",
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+				fill: true,
+				data: bits
+			}, {
+				label: "Subscribers",
+				backgroundColor: 'rgba(54, 162, 235, 0.2)',
+				borderColor: 'rgba(54, 162, 235, 1)',
+				borderWidth: 1,
+				fill: true,
+				data: subs
+			},
+			{
+				label: "Patreons",
+				backgroundColor: 'rgba(255, 206, 86, 0.2)',
+				borderColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+				fill: true,
+				data: pays
+			}]
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				text: "Revenue 2017"
+			},
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+				callbacks: {
+					label: function(tooltipItem, data) {
+						return data.datasets[tooltipItem.datasetIndex].label + ": $" + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+					},
+					footer: function(tooltipItems, data) {
+						var sum = 0;
+						tooltipItems.forEach(function(tooltipItem) {
+							sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+						});
+						return 'Sum: $' + sum;
+					},
+				}
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: false,
+						callback: function(value, index, values) {
+							return '$' + value;
+						}
+					}
+				}]
+			}
+		}
+	});
+}
+		</script>
+	</head>
+	<body>
+		<audio id="snort" src="snort.wav" controls=""></audio>
+		<div class="title">
+			<span><i><a href="#" onclick="document.getElementById('snort').play()">The Snort Report</a></i></span>
+		</div>
+		<div class="subtitle">
+			<span>"Thanks you, <b>ya fucking worthless humans</b>, for the views!" - Phil Burnell, 2012</span><br/><br/>
+			<span class="footer"><b>NOTE:</b> This doesn't include direct-to-paypal donations, youtube revenue, shirt-money, amazon referal links revenue, or whatever else DSP uses to get sweet, sweet money. This is all public data. His real revenue is probably <i>at least</i> triple this. Logs pre-September provided by <a href="https://twitter.com/EddyB43Cynic">@EddyB43Cynic</a>.</span>
+		</div>
+		<div class="chart-container">
+			<canvas id="chart_main"></canvas>
+		</div>
+	</body>
+</html>
