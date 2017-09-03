@@ -14,6 +14,12 @@ function date_to_ts(y, m, d=0) {
 	return new Date(y + "-" + m + "-" + (d == 0 ? days_in_month(y, m) : d) + " 00:00:00 GMT +00:00").getTime().toString()
 }
 
+function day_suffix(n) {
+    var s = ["th","st","nd","rd"],
+    v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
 window.onload = function() {
 	var c_date = new Date();
 	data = JSON.parse(data);
@@ -49,6 +55,18 @@ window.onload = function() {
 	}
 	if (pays.length < bits.length)
 		pays.push(last_patreon);
+	
+	var this_month = data[c_date.getFullYear()][months[c_date.getMonth()]];
+	var last_day = Object.keys(this_month)[Object.keys(this_month).length - 1];
+	document.getElementById("ban_date").innerHTML = day_suffix(last_day) + " " + months[c_date.getMonth()] + ", " + c_date.getFullYear() + " bans";
+	document.getElementById("bans_cont").innerHTML = "<div>Permabans</div><ul id='perma_list'></ul>";
+	for (var b in this_month[last_day]['permabans']) {
+	    document.getElementById("perma_list").innerHTML += "<li>" + this_month[last_day]['permabans'][b] + "</li>";
+	}
+	document.getElementById("bans_cont").innerHTML += "<div>Timeouts</div><ul id='timeout_list'></ul>";
+	for (var b in this_month[last_day]['bans']) {
+	    document.getElementById("timeout_list").innerHTML += "<li>" + this_month[last_day]['bans'][b] + "</li>";
+	}
 
 	var chart_main = new Chart(document.getElementById("chart_main").getContext('2d'), {
 		type: 'line',
