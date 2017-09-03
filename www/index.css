@@ -51,3 +51,23 @@ audio {
     width:80vw;
     margin: 0 auto;
 }
+
+.flex-container {
+    margin-top: 300px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.small-chart-container {
+    width: 500px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.large-chart-container {
+  margin-top: 50px;
+  margin-bottom: 120px;
+}
