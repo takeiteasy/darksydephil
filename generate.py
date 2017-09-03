@@ -15,9 +15,14 @@ sub_re = re.compile(r'^\[(\d){2}:(\d){2}\] <twitchnotify> \S+ (.*)$')
 new_sub_re = re.compile(r'.*\\ssubscribed\\s')
 cheer_re = re.compile(r'[?<=\s](?:kappa|kreygasm|swiftrage|cheer)(\d+)(?!\S)')
 
+c_date = datetime.datetime.now()
+last_month = month_names[11 if c_date.month == 1 else c_date.month - 2]
+
 users = {}
+paypigs = {}
+last_month_paypigs = {}
 data = {}
-for year in range(2016, datetime.datetime.now().year + 1):
+for year in range(2016, c_date.year + 1):
     data[year] = {}
     for month in range(0, 12):
         month_name = month_names[month]
@@ -38,9 +43,21 @@ for year in range(2016, datetime.datetime.now().year + 1):
                                         users[info['user-id']] = []
                                     if 'display-name' in info and info['display-name'] not in users[info['user-id']] and info['display-name'] != '':
                                         users[info['user-id']].append(info['display-name'])
+                                    else:
+                                        name = info['user-type'].split('!')[0][2:]
+                                        if name not in users[info['user-id']]:
+                                            users[info['user-id']].append(name)
 
                                     if 'bits' in info:
-                                        data[year][month_name][day]['bits'] += int(info['bits'])
+                                        bits = int(info['bits'])
+                                        data[year][month_name][day]['bits'] += bits
+                                        if not info['user-id'] in paypigs:
+                                            paypigs[info['user-id']] = 0
+                                        paypigs[info['user-id']] += bits
+                                        if year == c_date.year and month_name == last_month:
+                                            if not info['user-id'] in last_month_paypigs:
+                                                last_month_paypigs[info['user-id']] = 0
+                                            last_month_paypigs[info['user-id']] += bits
                                     elif 'msg-param-sub-plan' in info:
                                         data[year][month_name][day]['subs'] += sub_money[info['msg-param-sub-plan']]
                                     elif 'subscriber' in info and info['subscriber'] == '1' and 'system-msg' in info and new_sub_re.match(info['system-msg']):
@@ -48,7 +65,7 @@ for year in range(2016, datetime.datetime.now().year + 1):
 
                                 else:
                                     id = info['target-user-id'].split(" ")[0]
-                                    data[year][month_name][day]['bans' if '@ban-duration' in info else 'permabans'].append((users[id][-1] if len(users[id]) else msg) if id in users else msg)
+                                    data[year][month_name][day]['bans' if '@ban-duration' in info else 'permabans'].append(users[id][0] if id in users else msg)
                         else:
                             for line in fh:
                                 m = sub_re.match(line)
@@ -57,11 +74,18 @@ for year in range(2016, datetime.datetime.now().year + 1):
                                 else:
                                     data[year][month_name][day]['bits'] += sum([int(x) for x in cheer_re.findall(line)])
 
+paypigs_out = {}
+last_month_paypigs_out = {}
+
+paypigs_out = { users[v[0]][0]: v[1] for v in sorted(paypigs.items(), key=lambda k: k[1])[-30:] }
+last_month_paypigs_out = { users[v[0]][0]: v[1] for v in sorted(last_month_paypigs.items(), key=lambda k: k[1])[-30:] }
+
 patreon_data = None
 for line in requests.get("https://graphtreon.com/creator/darksydephil").text.split("\n"):
     if line[2:14] == "var dataJson":
         patreon_data = line[2:]
         break
+
 if patreon_data:
     with open("www/data.json", 'w') as fh:
-        fh.write("var data = '{}';\n{}".format(json.dumps(data).replace('\\s', ''), patreon_data))
+        fh.write("var data = '{}';\n{}\nvar paypigs = '{}';\nvar last_paypigs = '{}';".format(json.dumps(data), patreon_data, json.dumps(paypigs_out), json.dumps(last_month_paypigs_out)).replace('\\s', ''))
