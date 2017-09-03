@@ -25,16 +25,22 @@ window.onload = function() {
 	var bits  = [];
 	var subs  = [];
 	var pays  = [];
+	var bans  = [];
+	var temps = [];
 	for (var a in data) {
 		for (var b in data[a]) {
-			var tmp_bits = [], tmp_subs = [];
+			var tmp_bits = [], tmp_subs = [], tmp_bans = [], tmp_temps = [];
 			for (var c in data[a][b]) {
 				tmp_bits.push(data[a][b][c]['bits'] / 100);
 				tmp_subs.push(data[a][b][c]['subs']);
+				tmp_bans.push(data[a][b][c]['permabans'].length);
+				tmp_temps.push(data[a][b][c]['bans'].length);
 			}
 			dates.push(b + ", " + a);
 			bits.push(tmp_bits.reduce((a, b) => a + b, 0));
 			subs.push(tmp_subs.reduce((a, b) => a + b, 0));
+			bans.push(tmp_bans.reduce((a, b) => a + b, 0));
+			temps.push(tmp_temps.reduce((a, b) => a + b, 0));
 
 			var p_obj = patreon[date_to_ts(a, b)];
 			if (typeof(p_obj) != "undefined")
@@ -42,7 +48,7 @@ window.onload = function() {
 		}
 	}
 	if (pays.length < bits.length)
-		pays.push(0); // Temporary
+		pays.push(last_patreon);
 
 	var chart_main = new Chart(document.getElementById("chart_main").getContext('2d'), {
 		type: 'line',
@@ -298,6 +304,51 @@ window.onload = function() {
 						}
 					}
 				}],
+				xAxes: [{
+					ticks: {
+						autoSkip: false
+					}
+				}]
+			}
+		}
+	});
+	
+	var chart_5 = new Chart(document.getElementById("chart_5").getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: dates.slice(2),
+			datasets: [{
+			    label: "Bans",
+				backgroundColor: 'rgba(153, 102, 255, 0.2)',
+				borderColor: 'rgba(153, 102, 255, 1)',
+				borderWidth: 1,
+				fill: true,
+				data: bans.slice(2)
+			}, {
+			    label: "Timeouts",
+				backgroundColor: 'rgba(75, 192, 192, 0.2)',
+				borderColor: 'rgba(75, 192, 192, 1)',
+				borderWidth: 1,
+				fill: true,
+				data: temps.slice(2)
+			}]
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				text: "Bans"
+			},
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+				callbacks: {
+					label: function(tooltipItem, data) {
+						return data.datasets[tooltipItem.datasetIndex].label + ": " + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+					},
+				}
+			},
+			scales: {
 				xAxes: [{
 					ticks: {
 						autoSkip: false

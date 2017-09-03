@@ -86,6 +86,5 @@ for line in requests.get("https://graphtreon.com/creator/darksydephil").text.spl
         patreon_data = line[2:]
         break
 
-if patreon_data:
-    with open("www/data.json", 'w') as fh:
-        fh.write("var data = '{}';\n{}\nvar paypigs = '{}';\nvar last_paypigs = '{}';".format(json.dumps(data), patreon_data, json.dumps(paypigs_out), json.dumps(last_month_paypigs_out)).replace('\\s', ''))
+with open("www/data.json", 'w') as fh:
+    fh.write("var data = '{}';\n{}\nvar paypigs = '{}';\nvar last_paypigs = '{}';\nvar last_patreon = {};".format(json.dumps(data), patreon_data, json.dumps(paypigs_out), json.dumps(last_month_paypigs_out), int(re.findall(r'"pledge_sum": (\d+),', requests.get("https://www.patreon.com/darksydephil").text)[0]) / 100).replace('\\s', ''))
