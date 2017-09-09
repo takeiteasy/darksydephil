@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
 import os, datetime, re, json, requests
+from TwitterAPI import TwitterAPI
 
 def is_leap_year(y):
     return y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)
@@ -86,5 +87,19 @@ for line in requests.get("https://graphtreon.com/creator/darksydephil").text.spl
         patreon_data = line[2:]
         break
 
-with open("www/data.json", 'w') as fh:
+with open("www/data.js", 'w') as fh:
     fh.write("var data = '{}';\n{}\nvar paypigs = '{}';\nvar last_paypigs = '{}';\nvar last_patreon = {};".format(json.dumps(data), patreon_data, json.dumps(paypigs_out), json.dumps(last_month_paypigs_out), int(re.findall(r'"pledge_sum": (\d+),', requests.get("https://www.patreon.com/darksydephil").text)[0]) / 100).replace('\\s', ''))
+
+year = c_date.year
+month = c_date.month
+day = c_date.day
+
+if day == 1:
+    month = month - 1 if month > 1 else 12
+    if month == 12:
+        year -= 1
+    day = (29 if is_leap_year(year) else 28 if month == 2 else month_days[month - 1])
+else:
+    day -= 1
+
+print(year, month_names[month - 1], day)
