@@ -14,3 +14,4 @@ www/archives/*.png
 www/*.json
 a.out
 twitch_log
+www/data.js

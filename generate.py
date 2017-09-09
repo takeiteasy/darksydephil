@@ -6,7 +6,10 @@ def is_leap_year(y):
     return y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)
 
 def prepend_zero(n):
-  return "0" + str(n) if n < 10 else n
+    return "0" + str(n) if n < 10 else n
+
+def day_suffix(n):
+    return "th" if 4 <= n <= 20 or 24 <= n <= 30 else ["st", "nd", "rd"][n % 10 - 1]
 
 month_days  = [31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -32,7 +35,7 @@ for year in range(2016, c_date.year + 1):
             for day in range(1, (29 if is_leap_year(year) else 28 if month == 1 else month_days[month]) + 1):
                 path = "logs/{}/{}/{}-{}-{}.txt".format(year, month_name, year, prepend_zero(month + 1), prepend_zero(day))
                 if os.path.exists(path):
-                    data[year][month_name][day] = { 'permabans': [], 'bans': [], 'bits': 0, 'subs': 0 }
+                    data[year][month_name][day] = { 'permabans': 0, 'bans': 0, 'bits': 0, 'subs': 0 }
                     with open(path, 'r') as fh:
                         if year > 2016:
                             for line in fh:
@@ -65,8 +68,7 @@ for year in range(2016, c_date.year + 1):
                                         data[year][month_name][day]['subs'] += 2.5;
 
                                 else:
-                                    id = info['target-user-id'].split(" ")[0]
-                                    data[year][month_name][day]['bans' if '@ban-duration' in info else 'permabans'].append(users[id][0] if id in users else msg)
+                                    data[year][month_name][day]['bans' if '@ban-duration' in info else 'permabans'] += 1
                         else:
                             for line in fh:
                                 m = sub_re.match(line)
@@ -87,8 +89,14 @@ for line in requests.get("https://graphtreon.com/creator/darksydephil").text.spl
         patreon_data = line[2:]
         break
 
+youtube_data = None
+for line in requests.get("https://socialblade.com/youtube/user/dspgaming/monthly").text.split("\n"):
+    if line[2:20] == 'Date,Average Views':
+        youtube_data = dict(y.split(',') for y in [x[1:-3] for x in line[26:-4].split(" + ")])
+        break
+
 with open("www/data.js", 'w') as fh:
-    fh.write("var data = '{}';\n{}\nvar paypigs = '{}';\nvar last_paypigs = '{}';\nvar last_patreon = {};".format(json.dumps(data), patreon_data, json.dumps(paypigs_out), json.dumps(last_month_paypigs_out), int(re.findall(r'"pledge_sum": (\d+),', requests.get("https://www.patreon.com/darksydephil").text)[0]) / 100).replace('\\s', ''))
+    fh.write("var data = '{}';\n{}\nvar yt_data = '{}';\nvar paypigs = '{}';\nvar last_paypigs = '{}';\nvar last_patreon = {};".format(json.dumps(data), patreon_data, json.dumps(youtube_data), json.dumps(paypigs_out), json.dumps(last_month_paypigs_out), int(re.findall(r'"pledge_sum": (\d+),', requests.get("https://www.patreon.com/darksydephil").text)[0]) / 100).replace('\\s', ''))
 
 year = c_date.year
 month = c_date.month
@@ -101,5 +109,7 @@ if day == 1:
     day = (29 if is_leap_year(year) else 28 if month == 2 else month_days[month - 1])
 else:
     day -= 1
+month = month_names[month - 1]
 
-print(year, month_names[month - 1], day)
+config = [x[:-1] for x in open('twitter_bot.conf', 'r').readlines() if len(x) > 1]
+print(TwitterAPI(config[0], config[1], config[2], config[3]).request('statuses/update', { 'status': "#DSP #TheSnortReport for {}{} {}, {}: Cheers: ${}, Subs: ${}".format(day, day_suffix(day), month, year, data[year][month][day]['bits'] / 100, data[year][month][day]['subs']) }).status_code)
