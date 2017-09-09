@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-import sys, os, errno, re, socket, random, time
+import sys, os, errno, re, socket, random, time, atexit
 
 user = 'justinfan' + ''.join(random.choice("0123456789") for _ in range(10))
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 log_fh = None
 log_name = ''
 ts_re = re.compile(r'[tmi-]?sent-ts=(\d+)')
+
+@atexit.register
+def goodbye():
+    if irc:
+        irc.close()
+    if log_fh:
+        log_fh.close()
 
 def update_log_fh(ts):
     global log_name, log_fh
@@ -71,9 +78,4 @@ while True:
                     log_fh.write((msg + "\n").encode('utf-8'))
             elif msg[:4] == "PING":
                 send("PO" + msg[2:])
-
-if irc:
-    irc.close()
-if log_fh:
-    log_fh.close()
 
