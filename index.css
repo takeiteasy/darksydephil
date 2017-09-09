@@ -75,40 +75,6 @@ audio {
     margin: 50px 0 250px 0;
 }
 
-#bans {
-    width: 100%;
-    height: 260px;
-    border: 1px solid rgba(88, 93, 98, 0.75);
-}
-
-#ban_date {
-    width: 100%;
-    background-color: rgba(255, 255, 255, .75);
-    color: #24292e;
-    text-align: center;
-    border-bottom: 1px solid rgba(88, 93, 98, 0.75);
-}
-
-#bans_cont {
-    width: 100%;
-    height: 92%;
-    overflow-y: scroll;
-}
-
-#bans_cont div {
-    width: 100%;
-    background-color: rgba(255, 255, 255, .75);
-    color: #24292e;
-}
-
-#bans_cont ul {
-    padding: 2px;
-}
-
-li:nth-child(odd) {
-    color: #EEE;
-}
-
-li:nth-child(even) {
-    color: #777;
+#patreon-graphs {
+    margin-top: 50px;
 }

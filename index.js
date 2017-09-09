@@ -15,15 +15,15 @@ function date_to_ts(y, m, d=0) {
 }
 
 function day_suffix(n) {
-    var s = ["th","st","nd","rd"],
-    v = n % 100;
-    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+	var s = ["th","st","nd","rd"], v = n % 100;
+	return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
 window.onload = function() {
 	var c_date = new Date();
 	data = JSON.parse(data);
-	patreon = JSON.parse(dataJson);
+	var patreon = JSON.parse(dataJson);
+	var youtube = JSON.parse(yt_data);
 	paypigs = JSON.parse(paypigs);
 	last_paypigs = JSON.parse(last_paypigs);
 
@@ -39,8 +39,8 @@ window.onload = function() {
 			for (var c in data[a][b]) {
 				tmp_bits.push(data[a][b][c]['bits'] / 100);
 				tmp_subs.push(data[a][b][c]['subs']);
-				tmp_bans.push(data[a][b][c]['permabans'].length);
-				tmp_temps.push(data[a][b][c]['bans'].length);
+				tmp_bans.push(data[a][b][c]['permabans']);
+				tmp_temps.push(data[a][b][c]['bans']);
 			}
 			dates.push(b + ", " + a);
 			bits.push(tmp_bits.reduce((a, b) => a + b, 0));
@@ -55,18 +55,6 @@ window.onload = function() {
 	}
 	if (pays.length < bits.length)
 		pays.push(last_patreon);
-	
-	var this_month = data[c_date.getFullYear()][months[c_date.getMonth()]];
-	var last_day = Object.keys(this_month)[Object.keys(this_month).length - 1];
-	document.getElementById("ban_date").innerHTML = day_suffix(last_day) + " " + months[c_date.getMonth()] + ", " + c_date.getFullYear() + " bans";
-	document.getElementById("bans_cont").innerHTML = "<div>Permabans</div><ul id='perma_list'></ul>";
-	for (var b in this_month[last_day]['permabans']) {
-	    document.getElementById("perma_list").innerHTML += "<li>" + this_month[last_day]['permabans'][b] + "</li>";
-	}
-	document.getElementById("bans_cont").innerHTML += "<div>Timeouts</div><ul id='timeout_list'></ul>";
-	for (var b in this_month[last_day]['bans']) {
-	    document.getElementById("timeout_list").innerHTML += "<li>" + this_month[last_day]['bans'][b] + "</li>";
-	}
 
 	var chart_main = new Chart(document.getElementById("chart_main").getContext('2d'), {
 		type: 'line',
@@ -330,20 +318,20 @@ window.onload = function() {
 			}
 		}
 	});
-	
+
 	var chart_5 = new Chart(document.getElementById("chart_5").getContext('2d'), {
 		type: 'line',
 		data: {
 			labels: dates.slice(2),
 			datasets: [{
-			    label: "Bans",
+				label: "Bans",
 				backgroundColor: 'rgba(153, 102, 255, 0.2)',
 				borderColor: 'rgba(153, 102, 255, 1)',
 				borderWidth: 1,
 				fill: true,
 				data: bans.slice(2)
 			}, {
-			    label: "Timeouts",
+				label: "Timeouts",
 				backgroundColor: 'rgba(75, 192, 192, 0.2)',
 				borderColor: 'rgba(75, 192, 192, 1)',
 				borderWidth: 1,
@@ -370,6 +358,46 @@ window.onload = function() {
 				xAxes: [{
 					ticks: {
 						autoSkip: false
+					}
+				}]
+			}
+		}
+	});
+
+	var chart_6 = new Chart(document.getElementById("chart_6").getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: Object.keys(youtube).map(function(x) { return new Date(x).getTime(); }),
+			datasets: [{
+				label: "Views",
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgba(255,99,132,1)',
+				borderWidth: 1,
+				fill: false,
+				data: Object.keys(youtube).map(function(x) { return youtube[x]; })
+			}]
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				text: "Average Youtube Views per Month"
+			},
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+				callbacks: {
+					label: function(tooltipItem, data) {
+						return data.datasets[tooltipItem.datasetIndex].label + ": " + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+					},
+				}
+			},
+			scales: {
+				xAxes: [{
+					type: "time",
+					time: {
+						format: "MM/DD/YYYY HH:mm",
+						tooltipFormat: "ll HH:mm"
 					}
 				}]
 			}
