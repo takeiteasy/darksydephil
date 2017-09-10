@@ -26,6 +26,8 @@ window.onload = function() {
 	var youtube = JSON.parse(yt_data);
 	paypigs = JSON.parse(paypigs);
 	last_paypigs = JSON.parse(last_paypigs);
+	
+	document.getElementById("last_update").innerHTML = "Last updated: " + new Date(last_update * 1000);
 
 	var dates = [];
 	var bits  = [];

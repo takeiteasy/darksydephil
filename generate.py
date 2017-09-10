@@ -96,7 +96,7 @@ for line in requests.get("https://socialblade.com/youtube/user/dspgaming/monthly
         break
 
 with open("www/data.js", 'w') as fh:
-    fh.write("var data = '{}';\n{}\nvar yt_data = '{}';\nvar paypigs = '{}';\nvar last_paypigs = '{}';\nvar last_patreon = {};".format(json.dumps(data), patreon_data, json.dumps(youtube_data), json.dumps(paypigs_out), json.dumps(last_month_paypigs_out), int(re.findall(r'"pledge_sum": (\d+),', requests.get("https://www.patreon.com/darksydephil").text)[0]) / 100).replace('\\s', ''))
+    fh.write("var data = '{}';\n{}\nvar yt_data = '{}';\nvar paypigs = '{}';\nvar last_paypigs = '{}';\nvar last_patreon = {};\nvar last_update = '{}';".format(json.dumps(data), patreon_data, json.dumps(youtube_data), json.dumps(paypigs_out), json.dumps(last_month_paypigs_out), int(re.findall(r'"pledge_sum": (\d+),', requests.get("https://www.patreon.com/darksydephil").text)[0]) / 100, datetime.datetime.now().strftime("%s")).replace('\\s', ''))
 
 year = c_date.year
 month = c_date.month
