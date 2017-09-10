@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import sys, os, errno, re, socket, random, time, atexit
 
-user = 'justinfan' + ''.join(random.choice("0123456789") for _ in range(10))
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 log_fh = None
 log_name = ''
@@ -40,6 +39,7 @@ def send(msg):
 def try_connect():
     while True:
         try:
+            user = 'justinfan' + ''.join(random.choice("0123456789") for _ in range(10))
             irc.connect(("irc.chat.twitch.tv", 6667))
             send("USER {} 0 0 :{}".format(user, user))
             send("NICK {}".format(user))
@@ -49,7 +49,7 @@ def try_connect():
             send("JOIN #darksydephil")
             break
         except:
-            pass
+            time.sleep(10)
 
 try_connect()
 split_msg_buf = None
