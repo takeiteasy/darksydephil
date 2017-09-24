@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
-import sys, os, errno, re, socket, random, time, atexit, imaplib, email
+import sys, os, errno, re, socket, random, time, atexit, threading, imaplib, email
 
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 log_fh = None
 log_name = ''
+log_last = -1
 ts_re = re.compile(r'[tmi-]?sent-ts=(\d+)')
 
 @atexit.register
 def goodbye():
     if irc:
-        irc.close()
+        try:
+            irc.shutdown(socket.SHUT_RDWR)
+        except:
+            pass
+        finally:
+            irc.close()
     if log_fh:
         log_fh.close()
 
 def update_log_fh(ts):
-    global log_name, log_fh
+    global log_name, log_fh, log_last
+    log_last = time.time()
     ts = time.strftime('logs/%Y/%B/%Y-%m-%d.txt', time.localtime(int(ts) / 1000))
     if ts != log_name:
         log_name = ts
@@ -35,6 +42,17 @@ def update_log_fh(ts):
 
 def send(msg):
     irc.send("{}\r\n".format(msg).encode())
+
+def log_timeout():
+    while True:
+        if log_last > -1:
+            if time.time() - log_last >= 900:
+                global log_fh, log_last, log_name
+                log_fh.close()
+                log_fh = None
+                log_last = -1
+                log_name = ''
+        time.sleep(2)
 
 config = [x[:-1] for x in open('gmail.conf', 'r').readlines() if len(x) > 1]
 with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
@@ -57,6 +75,8 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                         send("CAP REQ :twitch.tv/commands")
                         send("JOIN #darksydephil")
 
+                        thread.start_new_thread(log_timeout)
+
                         split_msg_buf = None
                         while True:
                             try:
@@ -64,7 +84,12 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                             except KeyboardInterrupt as e:
                                 sys.exit(0)
                             except:
-                                break
+                                try:
+                                    irc.shutdown(socket.SHUT_RDWR)
+                                except:
+                                    pass
+                                finally:
+                                    break
 
                             if split_msg_buf:
                                 txt[0] = split_msg_buf + txt[0]
