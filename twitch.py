@@ -74,6 +74,9 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
             result2, data2 = mail.uid('fetch', uid, '(RFC822)')
             if result2 == "OK" and data2:
                 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                thread.start_new_thread(log_timeout)
+                thread.start_new_thread(irc_timeout)
+
                 while True:
                     try:
                         user = 'justinfan' + ''.join(random.choice("0123456789") for _ in range(10))
@@ -84,9 +87,6 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                         send("CAP REQ :twitch.tv/tags")
                         send("CAP REQ :twitch.tv/commands")
                         send("JOIN #darksydephil")
-
-                        thread.start_new_thread(log_timeout)
-                        thread.start_new_thread(irc_timeout)
 
                         split_msg_buf = None
                         while True:
@@ -122,5 +122,6 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                                         send("PO" + msg[2:])
                                     elif msg[:15] == "@msg-id=host_on":
                                         sys.exit(0)
+                                    print(msg)
                     except:
                         time.sleep(10)
