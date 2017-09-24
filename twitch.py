@@ -5,6 +5,7 @@ irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 log_fh = None
 log_name = ''
 log_last = -1
+last_msg = -1
 ts_re = re.compile(r'[tmi-]?sent-ts=(\d+)')
 
 @atexit.register
@@ -54,6 +55,13 @@ def log_timeout():
                 log_name = ''
         time.sleep(2)
 
+def irc_timeout():
+    while True:
+        if log_last > -1:
+            if time.time() - last_msg >= 900:
+                sys.exit(0)
+        time.sleep(2)
+
 config = [x[:-1] for x in open('gmail.conf', 'r').readlines() if len(x) > 1]
 with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
     mail.login(config[0], config[1])
@@ -76,6 +84,7 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                         send("JOIN #darksydephil")
 
                         thread.start_new_thread(log_timeout)
+                        thread.start_new_thread(irc_timeout)
 
                         split_msg_buf = None
                         while True:
@@ -101,6 +110,7 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                             for msg in txt:
                                 if msg:
                                     if msg[:3] == "@ba": # All the interesting messages start with "@ba"
+                                        last_msg = time.time()
                                         ts = ts_re.findall(msg)
                                         if ts or not log_fh:
                                             update_log_fh(ts[1] if len(ts) >= 2 else ts[0])
