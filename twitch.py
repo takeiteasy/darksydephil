@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys, os, errno, re, socket, random, time, atexit, threading, imaplib, email
 
-irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+irc = None 
 log_fh = None
 log_name = ''
 log_last = -1
@@ -45,10 +45,11 @@ def send(msg):
     irc.send("{}\r\n".format(msg).encode())
 
 def log_timeout():
+    global log_last
     while True:
         if log_last > -1:
             if time.time() - log_last >= 900:
-                global log_fh, log_last, log_name
+                global log_fh, log_name
                 log_fh.close()
                 log_fh = None
                 log_last = -1
@@ -72,6 +73,7 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
         for uid in data[0].decode("utf-8").split(" "):
             result2, data2 = mail.uid('fetch', uid, '(RFC822)')
             if result2 == "OK" and data2:
+                irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 while True:
                     try:
                         user = 'justinfan' + ''.join(random.choice("0123456789") for _ in range(10))
