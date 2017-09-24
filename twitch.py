@@ -19,6 +19,7 @@ def goodbye():
             irc.close()
     if log_fh:
         log_fh.close()
+    print("Goodbye!")
 
 def update_log_fh(ts):
     global log_name, log_fh, log_last
@@ -37,8 +38,10 @@ def update_log_fh(ts):
                 except OSError as exc:
                     if exc.errno != errno.EEXIST:
                         raise
+            print("Opening new log '{}'".format(log_name))
             log_fh = open(log_name, 'wb')
         else:
+            print("Opening existing log '{}'".format(log_name))
             log_fh = open(log_name, 'ab')
 
 def send(msg):
@@ -48,7 +51,8 @@ def log_timeout():
     global log_last
     while True:
         if log_last > -1:
-            if time.time() - log_last >= 900:
+            if time.time() - log_last >= 600:
+                print("No message for 10 minutes, closing log for now ...")
                 global log_fh, log_name
                 log_fh.close()
                 log_fh = None
@@ -60,19 +64,28 @@ def irc_timeout():
     while True:
         if log_last > -1:
             if time.time() - last_msg >= 900:
+                print("No message for 15 minutes, probably gone offline ...")
                 sys.exit(0)
         time.sleep(2)
 
-config = [x[:-1] for x in open('gmail.conf', 'r').readlines() if len(x) > 1]
+try:
+    config = [x[:-1] for x in open('gmail.conf', 'r').readlines() if len(x) > 1]
+except:
+    print("Failed to read gmail.conf!")
+    sys.exit(-1)
+
 with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
     mail.login(config[0], config[1])
     mail.select("inbox")
 
+    print("Checking GMail for twitch notification ...")
     result, data = mail.uid('search', None, '(HEADER Subject "darksydephil just went live on Twitch") (UNSEEN)')
     if result == "OK" and data[0].decode("utf-8"):
         for uid in data[0].decode("utf-8").split(" "):
             result2, data2 = mail.uid('fetch', uid, '(RFC822)')
             if result2 == "OK" and data2:
+                print("DSP is live! Activating IRC log ...")
+
                 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 a = threading.Thread(name='log_thread', target=log_timeout, daemon=True)
                 b = threading.Thread(name='irc_thread', target=irc_timeout, daemon=True)
@@ -90,6 +103,8 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                         send("CAP REQ :twitch.tv/commands")
                         send("JOIN #darksydephil")
 
+
+                        print("Connected to Twitch IRC server and #darksydephil channel!")
                         split_msg_buf = None
                         while True:
                             try:
@@ -97,6 +112,7 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                             except KeyboardInterrupt as e:
                                 sys.exit(0)
                             except:
+                                print("Something went wrong! Reconnecting ...")
                                 try:
                                     irc.shutdown(socket.SHUT_RDWR)
                                 except:
@@ -113,7 +129,7 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
 
                             for msg in txt:
                                 if msg:
-                                    if msg[:3] == "@ba": # All the interesting messages start with "@ba"
+                                    if msg[:3] == "@ba":
                                         last_msg = time.time()
                                         ts = ts_re.findall(msg)
                                         if ts or not log_fh:
@@ -123,6 +139,7 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
                                     elif msg[:4] == "PING":
                                         send("PO" + msg[2:])
                                     elif msg[:15] == "@msg-id=host_on":
+                                        print("Now hosting someone else, stream over ...")
                                         sys.exit(0)
                                     print(msg)
                     except:
