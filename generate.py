@@ -111,5 +111,5 @@ else:
     day -= 1
 month = month_names[month - 1]
 
-config = [x[:-1] for x in open('twitter_bot.conf', 'r').readlines() if len(x) > 1]
+config = [x[:-1] for x in open('twitter.conf', 'r').readlines() if len(x) > 1]
 print(TwitterAPI(config[0], config[1], config[2], config[3]).request('statuses/update', { 'status': "#DSP #TheSnortReport for {}{} {}, {}: Cheers: ${}, Subs: ${}".format(day, day_suffix(day), month, year, data[year][month][day]['bits'] / 100, data[year][month][day]['subs']) }).status_code)
