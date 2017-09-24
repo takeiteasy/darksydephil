@@ -74,8 +74,10 @@ with imaplib.IMAP4_SSL('imap.gmail.com') as mail:
             result2, data2 = mail.uid('fetch', uid, '(RFC822)')
             if result2 == "OK" and data2:
                 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                thread.start_new_thread(log_timeout)
-                thread.start_new_thread(irc_timeout)
+                a = threading.Thread(name='log_thread', target=log_timeout, daemon=True)
+                b = threading.Thread(name='irc_thread', target=irc_timeout, daemon=True)
+                a.start()
+                b.start()
 
                 while True:
                     try:
