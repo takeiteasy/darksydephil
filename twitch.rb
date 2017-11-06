@@ -25,12 +25,12 @@ module Emitter
     @callbacks ||= Hash.new { |h, k| h[k] = [] }
   end
 
-  def on(type, &block)
+  def on type, &block
     callbacks[type] << block
     self
   end
 
-  def emit(type, *args)
+  def emit type, *args
     callbacks[type].each do |block|
       block.call(*args)
     end
@@ -42,7 +42,7 @@ class Stream
   include Emitter
   attr_accessor :io, :buf
 
-  def initialize(serv, port)
+  def initialize serv, port
     @buf = []
     Timeout.timeout(5) do
       @io = TCPSocket.new serv, port
@@ -61,7 +61,7 @@ class Stream
   rescue Errno::EPIPE
   end
 
-  def <<(data)
+  def << data
     @buf << data
   end
 
@@ -89,7 +89,7 @@ end
 class Bot
   attr_reader :stream
 
-  def initialize(stream)
+  def initialize stream
     @stream = stream
     @stream.on :CLOSED do
       stop

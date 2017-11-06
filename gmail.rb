@@ -6,7 +6,6 @@ Gmail.connect login, password do |gmail|
   gmail.inbox.find(:unread, from: 'no-reply@twitch.tv').each do |email|
     next unless email.message.subject == 'darksydephil just went live on Twitch'
     email.read!
-    puts email.message.subject
     exit 0
   end
 end
