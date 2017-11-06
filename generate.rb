@@ -14,8 +14,22 @@ def is_leap y
   y % 4 == 0 && (y % 100 != 0 || y % 400 == 0)
 end
 
+def date_suffix n
+  if (11..13).include? n.to_i.abs % 100
+    "th"
+  else
+    case n.to_i.abs % 10
+    when 1 then "st"
+    when 2 then "nd"
+    when 3 then "rd"
+    else        "th"
+    end
+  end
+end
+
 now = Time.now
-last_month = month_names[(now.month == 12 ? 1 : now.month) - 1]
+#last_month = month_names[(now.month == 12 ? 1 : now.month) - 1]
+last_month = "August" # TODO: Change back
 data, users, paypigs, last_month_paypigs = {}, {}, {}, {}
 2016.upto now.year do |year|
   data[year] = {}
@@ -42,7 +56,7 @@ data, users, paypigs, last_month_paypigs = {}, {}, {}, {}
                 if params.has_key? "user-id"
                   users[params["user-id"]] = [] unless users.has_key? "user-id"
                   if params.has_key?("display-name") && !users[params["user-id"]].include?(params["display-name"])
-                    users[params["user-id"]].push users[params["user-id"]]
+                    users[params["user-id"]].push params["display-name"]
                   else
                     unless user.nil?
                       name = user.split('!')[0]
@@ -50,8 +64,8 @@ data, users, paypigs, last_month_paypigs = {}, {}, {}, {}
                     end
                   end
 
-                  if params.has_key?("badges") && params["badges"] =~ /bits\/(\d+)/
-                    bits = $1.to_i
+                  if params.has_key? "bits"
+                    bits = params["bits"].to_i
                     data[year][month][day]["bits"] += bits
                     paypigs[params["user-id"]]  = 0 unless paypigs.has_key? params["user-id"]
                     paypigs[params["user-id"]] += bits
@@ -84,22 +98,22 @@ data, users, paypigs, last_month_paypigs = {}, {}, {}, {}
   end
 end
 
-paypigs            =            paypigs.sort_by { |k, v| v }.reverse[0..30].to_h.to_json
-last_month_paypigs = last_month_paypigs.sort_by { |k, v| v }.reverse[0..30].to_h.to_json
+paypigs = paypigs.sort_by { |k, v| v }.reverse[0..30].map { |v| [users[v[0]][0], v[1]]}.to_h.to_json
+last_month_paypigs = last_month_paypigs.sort_by { |k, v| v }.reverse[0..30].map { |v| [users[v[0]][0], v[1]]}.to_h.to_json
 
 pt = /var dataJson = '(.*)'/.match(Net::HTTP.get(URI("https://graphtreon.com/creator/darksydephil")))[1]
 yt = /"Date,Average Views\\n" \+ (.*) {/.match(Net::HTTP.get(URI("https://socialblade.com/youtube/user/dspgaming/monthly")))[1].scan(/(\d+-\d+-\d+,\d+)/).map { |x| x[0].split ',' }.to_h.to_json
 lp = Net::HTTP.get(URI("https://www.patreon.com/darksydephil")).scan(/pledge_sum": (\d+)/)[0][0]
 
-File.open "www/data.js", "w" do |fh|
-  fh.write "var data = '#{data.to_json}';\nvar dataJson = #{pt}\nvar yt_data = '#{yt}';\nvar paypigs = '#{paypigs}';\nvar last_paypigs = '#{last_month_paypigs}';\nvar last_patreon = '#{lp.to_i / 100}';\nvar last_update = '#{now.to_i}';"
-end
+puts "var data = '#{data.to_json}';\nvar dataJson = '#{pt}'\nvar yt_data = '#{yt}';\nvar paypigs = '#{paypigs}';\nvar last_paypigs = '#{last_month_paypigs}';\nvar last_patreon = #{lp.to_i / 100};\nvar last_update = #{now.to_i};"
+
+exit 0 # TODO: Remove once finished testing
 
 year  = now.year
 month = now.month
 day   = now.day
 
-if day == 1:
+if day == 1
   month = (month > 1 ? month - 1 : 12)
   year -= 1 if month == 12
   day   = (month == 2 ? (is_leap(year) ? 29 : 28) : month_days[month - 1])
@@ -115,4 +129,4 @@ client = Twitter::Streaming::Client.new do |config|
   config.access_token        = c
   config.access_token_secret = d
 end
-client.update("#DSP #TheSnortReport for #{day}#{day_suffix(day)} #{month}, #{year}: Cheers: $#{data[year][month][day]['bits'] / 100}, Subs: $#{data[year][month][day]['subs']}")
+client.update("#DSP #TheSnortReport for #{day}#{day_suffix day} #{month}, #{year}: Cheers: $#{data[year][month][day]['bits'] / 100}, Subs: $#{data[year][month][day]['subs']}")

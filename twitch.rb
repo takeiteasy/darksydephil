@@ -3,6 +3,7 @@ require "socket"
 require "timeout"
 require "FileUtils"
 require "gmail"
+require "thread"
 
 # Extend IO to readlines without blocking
 class IO
@@ -139,12 +140,21 @@ begin
         sock << "CAP REQ :twitch.tv/commands"
         sock << "JOIN ##{chan}"
 
+				last_msg, timeout = Time.now, 900
+				Thread.new do
+					loop do
+						bot.stop if Time.now - last_msg > timeout
+						sleep 0.001
+					end
+				end
+
         sock.on :READ do |data|
           if data.start_with? "PING"
             data[1] = 'O'
             sock << data
           else
             time = Time.now.getlocal(tz)
+						last_msg = Time.now
             path = time.strftime out
             unless path == fh_p
               fh_p = path
@@ -164,8 +174,7 @@ begin
   end
 rescue SystemExit, Interrupt
 	bot.stop unless bot.nil?
-rescue Exception => e
-	raise
+rescue EOFError, Exception
 ensure
   fh.close unless fh.nil?
 end
