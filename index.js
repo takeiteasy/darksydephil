@@ -27,6 +27,8 @@ window.onload = function() {
 	paypigs = JSON.parse(paypigs);
 	last_paypigs = JSON.parse(last_paypigs);
 
+	document.getElementById("last_update").innerHTML = "Last updated: " + new Date(last_update * 1000);
+
 	var dates = [];
 	var bits  = [];
 	var subs  = [];
@@ -120,7 +122,8 @@ window.onload = function() {
 	});
 
 	var p_labels = Object.keys(patreon).map(function(k) { return parseInt(k); });
-	var last_month = months[(c_date.getMonth() == 0 ? 11 : c_date.getMonth() - 1)];
+	// var last_month = months[(c_date.getMonth() == 0 ? 11 : c_date.getMonth() - 1)];
+	var last_month = "August"; // TODO: CHANGE BACK AFTER GETTING LOGS
 	var last_month_year = (last_month == "December" ? c_date.getFullYear() - 1 : c_date.getFullYear());
 	var days_last_month = Array.from(Array(days_in_month(c_date.getYear(), last_month))).map((e, i) => i + 1);
 
@@ -414,6 +417,14 @@ window.onload = function() {
 				borderColor: 'rgba(255, 206, 86, 1)',
 				borderWidth: 1,
 				data: Object.keys(patreon).map(function(k) { return patreon[k]["earnings"] })
+			}, {
+				label: "Goal",
+				borderColor: 'rgba(255,99,132,1)',
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				pointStyle: 'line',
+				fill: 0,
+				borderWidth: 1,
+				data: Object.keys(patreon).map(function(k) { return 1250 })
 			}]
 		},
 		options: {
