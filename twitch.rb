@@ -2,7 +2,6 @@
 require 'socket'
 require 'timeout'
 require 'FileUtils'
-require 'gmail'
 require 'thread'
 
 # Extend IO to readlines without blocking
@@ -124,56 +123,50 @@ tz   = '-07:00'
 login, password = File.open('gmail.conf').readlines.map(&:rstrip)
 
 begin
-  Gmail.connect login, password do |gmail|
-    gmail.inbox.find(:unread, from: 'no-reply@twitch.tv').each do |email|
-      next unless email.message.subject == 'darksydephil just went live on Twitch'
-      email.read!
+  sock = Stream.new 'irc.chat.twitch.tv', 6667
+  bot  = Bot.new sock
 
-      sock = Stream.new 'irc.chat.twitch.tv', 6667
-      bot  = Bot.new sock
+  sock << "USER #{user} 0 0 :#{user}"
+  sock << "NICK #{user}"
+  sock << 'CAP REQ :twitch.tv/membership'
+  sock << 'CAP REQ :twitch.tv/tags'
+  sock << 'CAP REQ :twitch.tv/commands'
+  sock << "JOIN ##{chan}"
 
-      sock << "USER #{user} 0 0 :#{user}"
-      sock << "NICK #{user}"
-      sock << 'CAP REQ :twitch.tv/membership'
-      sock << 'CAP REQ :twitch.tv/tags'
-      sock << 'CAP REQ :twitch.tv/commands'
-      sock << "JOIN ##{chan}"
-
-      last_msg = Time.now
-      timeout = 900
-      Thread.new do
-        loop do
-          bot.stop if Time.now - last_msg > timeout
-          sleep 0.001
-        end
-      end
-
-      sock.on :READ do |data|
-        if data.start_with? 'PING'
-          data[1] = 'O'
-          sock << data
-        else
-          time = Time.now.getlocal(tz)
-          last_msg = Time.now
-          path = time.strftime out
-          unless path == fh_p
-            fh_p = path
-            fh.close unless fh.nil?
-            fh_p_dn = File.dirname fh_p
-            FileUtils.mkdir_p fh_p_dn unless File.directory? fh_p_dn
-            fh = File.open fh_p, 'a+'
-          end
-          fh.write data + "\n"
-          bot.stop if data.start_with? '@msg-id=host_on'
-        end
-      end
-
-      bot.start
+  last_msg = Time.now
+  timeout = 900
+  Thread.new do
+    loop do
+      bot.stop if Time.now - last_msg > timeout
+      sleep 0.001
     end
   end
+
+  sock.on :READ do |data|
+    if data.start_with? 'PING'
+      data[1] = 'O'
+      sock << data
+    else
+      time = Time.now.getlocal(tz)
+      last_msg = Time.now
+      path = time.strftime out
+      unless path == fh_p
+        fh_p = path
+        fh.close unless fh.nil?
+        fh_p_dn = File.dirname fh_p
+        FileUtils.mkdir_p fh_p_dn unless File.directory? fh_p_dn
+        fh = File.open fh_p, 'a+'
+      end
+      fh.write data + "\n"
+      bot.stop if data.start_with? '@msg-id=host_on'
+    end
+  end
+
+  bot.start
 rescue SystemExit, Interrupt
   bot.stop unless bot.nil?
-rescue EOFError, Exception
+rescue Exception
+  raise
 ensure
   fh.close unless fh.nil?
 end
