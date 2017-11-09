@@ -146,7 +146,7 @@ begin
     if data.start_with? 'PING'
       data[1] = 'O'
       sock << data
-    else
+    elsif data.start_with? '@ba'
       time = Time.now.getlocal(tz)
       last_msg = Time.now
       path = time.strftime out
