@@ -528,12 +528,12 @@ window.onload = function() {
       }
     }
   });
-
+  
   var paymetonnes_chart3 = new Chart(document.getElementById("chart_paymetonnes3").getContext('2d'), {
     type: "line",
     data: {
       labels: Object.keys(live_patreon).map(function(k) {
-        return parseInt(k);
+        return parseInt(k) * 1000;
       }),
       datasets: [{
         label: "Patreon $$$",
