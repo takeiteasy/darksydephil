@@ -34,7 +34,8 @@ class String
 end
 
 now = Time.now
-last_month = month_names[(now.month == 12 ? 1 : now.month) - 1]
+last_month = month_names[(now.month == 12 ? 0 : now.month - 2)]
+last_month_year = (last_month == "December" ? now.year - 1 : now.year)
 data = {}
 users = {}
 paypigs = {}
@@ -97,10 +98,10 @@ last_month_paypigs = {}
                     end
                     user_id = $1 if user_id.nil?
                     paypigs[user_id]  = 0 unless paypigs.key? user_id
-                    paypigs[user_id] += tips
+                    paypigs[user_id] += tips * 100
                     if year == now.year && month == last_month
                       last_month_paypigs[user_id]  = 0 unless last_month_paypigs.key? user_id
-                      last_month_paypigs[user_id] += tips
+                      last_month_paypigs[user_id] += tips * 100
                     end
                   end
                 elsif params.key? 'bits'
@@ -108,7 +109,7 @@ last_month_paypigs = {}
                   data[year][month][day]['bits'] += bits
                   paypigs[params['user-id']]  = 0 unless paypigs.key? params['user-id']
                   paypigs[params['user-id']] += bits
-                  if year == now.year && month == last_month
+                  if year == last_month_year && month == last_month
                     last_month_paypigs[params['user-id']]  = 0 unless last_month_paypigs.key? params['user-id']
                     last_month_paypigs[params['user-id']] += bits
                   end
@@ -138,8 +139,6 @@ lp = Net::HTTP.get(URI('https://www.patreon.com/darksydephil')).scan(/pledge_sum
 
 puts "var data = '#{data.to_json}';\nvar dataJson = '#{pt}'\nvar yt_data = '#{yt}';\nvar paypigs = '#{paypigs}';\nvar last_paypigs = '#{last_month_paypigs}';\nvar last_patreon = #{lp.to_i / 100};\nvar last_update = #{now.to_i};"
 
-exit 0 # TODO: Remove once finished testing
-
 year  = now.year
 month = now.month
 day   = now.day
@@ -160,4 +159,4 @@ client = Twitter::Streaming::Client.new do |config|
   config.access_token        = c
   config.access_token_secret = d
 end
-client.update("#DSP #TheSnortReport for #{day}#{day_suffix day} #{month}, #{year}: Cheers: $#{data[year][month][day]['bits'] / 100}, Subs: $#{data[year][month][day]['subs']}")
+client.update("#DSP #TheSnortReport for #{day}#{day_suffix day} #{month}, #{year}: Cheers: $#{data[year][month][day]['bits'] / 100}, Subs: $#{data[year][month][day]['subs']}, Tips: $#{data[year][month][day]['tips']}")
