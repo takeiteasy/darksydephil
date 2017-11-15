@@ -27,9 +27,14 @@ def date_suffix(n)
   end
 end
 
+class String
+  def is_i?
+    /\A[-+]?\d+\z/ === self
+  end
+end
+
 now = Time.now
-# last_month = month_names[(now.month == 12 ? 1 : now.month) - 1]
-last_month = 'August' # TODO: Change back
+last_month = month_names[(now.month == 12 ? 1 : now.month) - 1]
 data = {}
 users = {}
 paypigs = {}
@@ -45,7 +50,9 @@ last_month_paypigs = {}
       data[year][month][day] = { 'permabans' => 0,
                                  'bans'      => 0,
                                  'bits'      => 0,
-                                 'subs'      => 0 }
+                                 'subs'      => 0,
+                                 'tips'      => 0 }
+
       File.open fh_p, 'r' do |fh|
         while line = fh.gets
           if year == 2016
@@ -59,7 +66,7 @@ last_month_paypigs = {}
             next unless line[0] == '@'
 
             /^@(?<params>[a-zA-Z-]+=\S*)\s?:((?<user>\S+!\S+@\S+)\.)?tmi\.twitch\.tv (?<type>\S+) #\S+( :(?<msg>.*))?$/ =~ line
-            unless $LAST_MATCH_INFO.nil?
+            unless $~.nil?
               params = params.split(';').reject { |a| a[-1] == '=' }.map { |b| b.split '=' }.to_h
               user   = user.split('!')[0] unless user.nil?
 
@@ -74,7 +81,29 @@ last_month_paypigs = {}
                   end
                 end
 
-                if params.key? 'bits'
+                if (year == 2017 && month_n >= 10 || year > 2017) && (params['user-id'] == '19264788' && params['display-name'] == 'Nightbot')
+                  /(.*) just tipped \$([-+]?[0-9]*\.?[0-9]+)/ =~ msg
+                  unless $~.nil?
+                    tips = $2.to_f
+                    data[year][month][day]['tips'] += tips
+                    user_id = nil
+                    unless $1 == "Anonymous"
+                      users.each do |k, v|
+                        if v.any? { |s| s.casecmp($1) == 0 }
+                          user_id = k
+                          break
+                        end
+                      end
+                    end
+                    user_id = $1 if user_id.nil?
+                    paypigs[user_id]  = 0 unless paypigs.key? user_id
+                    paypigs[user_id] += tips
+                    if year == now.year && month == last_month
+                      last_month_paypigs[user_id]  = 0 unless last_month_paypigs.key? user_id
+                      last_month_paypigs[user_id] += tips
+                    end
+                  end
+                elsif params.key? 'bits'
                   bits = params['bits'].to_i
                   data[year][month][day]['bits'] += bits
                   paypigs[params['user-id']]  = 0 unless paypigs.key? params['user-id']
@@ -100,8 +129,8 @@ last_month_paypigs = {}
   end
 end
 
-paypigs = paypigs.sort_by { |_k, v| v }.reverse[0..30].map { |v| [users[v[0]][0], v[1]] }.to_h.to_json
-last_month_paypigs = last_month_paypigs.sort_by { |_k, v| v }.reverse[0..30].map { |v| [users[v[0]][0], v[1]] }.to_h.to_json
+paypigs = paypigs.sort_by { |_k, v| v }.reverse[0..30].map { |v| [(v[0].is_i? ? users[v[0]][0] : v[0]), v[1]] }.to_h.to_json
+last_month_paypigs = last_month_paypigs.sort_by { |_k, v| v }.reverse[0..30].map { |v| [(v[0].is_i? ? users[v[0]][0] : v[0]), v[1]] }.to_h.to_json
 
 pt = /var dataJson = '(.*)'/.match(Net::HTTP.get(URI('https://graphtreon.com/creator/darksydephil')))[1]
 yt = /"Date,Average Views\\n" \+ (.*) {/.match(Net::HTTP.get(URI('https://socialblade.com/youtube/user/dspgaming/monthly')))[1].scan(/(\d+-\d+-\d+,\d+)/).map { |x| x[0].split ',' }.to_h.to_json
