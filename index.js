@@ -36,23 +36,27 @@ window.onload = function() {
   var pays = [];
   var bans = [];
   var temps = [];
+  var tips = [];
   for (var a in data) {
     for (var b in data[a]) {
       var tmp_bits = [],
         tmp_subs = [],
         tmp_bans = [],
-        tmp_temps = [];
+        tmp_temps = [],
+        tmp_tips = [];
       for (var c in data[a][b]) {
         tmp_bits.push(data[a][b][c]['bits'] / 100);
         tmp_subs.push(data[a][b][c]['subs']);
         tmp_bans.push(data[a][b][c]['permabans']);
         tmp_temps.push(data[a][b][c]['bans']);
+        tmp_tips.push(data[a][b][c]['tips']);
       }
       dates.push(b + ", " + a);
       bits.push(tmp_bits.reduce((a, b) => a + b, 0));
       subs.push(tmp_subs.reduce((a, b) => a + b, 0));
       bans.push(tmp_bans.reduce((a, b) => a + b, 0));
       temps.push(tmp_temps.reduce((a, b) => a + b, 0));
+      tips.push(tmp_tips.reduce((a, b) => a + b, 0));
 
       var p_obj = patreon[date_to_ts(a, b)];
       if (typeof(p_obj) != "undefined")
@@ -80,16 +84,21 @@ window.onload = function() {
           borderWidth: 1,
           fill: true,
           data: subs
-        },
-        {
+        }, {
           label: "Patreons",
           backgroundColor: 'rgba(255, 206, 86, 0.2)',
           borderColor: 'rgba(255, 206, 86, 1)',
           borderWidth: 1,
           fill: true,
           data: pays
-        }
-      ]
+        }, {
+          label: "Tips",
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          fill: true,
+          data: tips
+        }]
     },
     options: {
       responsive: true,
@@ -129,8 +138,7 @@ window.onload = function() {
   var p_labels = Object.keys(patreon).map(function(k) {
     return parseInt(k);
   });
-  // var last_month = months[(c_date.getMonth() == 0 ? 11 : c_date.getMonth() - 1)];
-  var last_month = "August"; // TODO: CHANGE BACK AFTER GETTING LOGS
+  var last_month = months[(c_date.getMonth() == 0 ? 11 : c_date.getMonth() - 1)];
   var last_month_year = (last_month == "December" ? c_date.getFullYear() - 1 : c_date.getFullYear());
   var days_last_month = Array.from(Array(days_in_month(c_date.getYear(), last_month))).map((e, i) => i + 1);
 
@@ -514,30 +522,18 @@ window.onload = function() {
     }
   });
 
-  p_labels = Object.keys(live_patreon).map(function(k) {
-    return parseInt(k);
-  });
 	var paymetonnes_chart3 = new Chart(document.getElementById("chart_paymetonnes3").getContext('2d'), {
 		type: "line",
 		data: {
-			labels: p_labels,
+			labels: Object.keys(live_patreon).map(function(k) { return parseInt(k); }),
 			datasets: [{
 				label: "Patreon $$$",
 				backgroundColor: 'rgba(255, 206, 86, 0.2)',
 				borderColor: 'rgba(255, 206, 86, 1)',
 				borderWidth: 1,
+        pointStyle: 'line',
 				data: Object.keys(live_patreon).map(function(k) {
 					return live_patreon[k]["earnings"] / 100
-				})
-			}, {
-				label: "Goal",
-				borderColor: 'rgba(255,99,132,1)',
-				backgroundColor: 'rgba(255, 99, 132, 0.2)',
-				pointStyle: 'none',
-				fill: 0,
-				borderWidth: 1,
-				data: Object.keys(live_patreon).map(function(k) {
-					return 1250
 				})
 			}]
 		},
