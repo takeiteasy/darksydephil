@@ -71,34 +71,34 @@ window.onload = function() {
     data: {
       labels: dates,
       datasets: [{
-          label: "Cheers",
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          fill: true,
-          data: bits
-        }, {
-          label: "Subscribers",
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1,
-          fill: true,
-          data: subs
-        }, {
-          label: "Patreons",
-          backgroundColor: 'rgba(255, 206, 86, 0.2)',
-          borderColor: 'rgba(255, 206, 86, 1)',
-          borderWidth: 1,
-          fill: true,
-          data: pays
-        }, {
-          label: "Tips",
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
-          fill: true,
-          data: tips
-        }]
+        label: "Cheers",
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: bits
+      }, {
+        label: "Subscribers",
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: subs
+      }, {
+        label: "Patreons",
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: pays
+      }, {
+        label: "Tips",
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: tips
+      }]
     },
     options: {
       responsive: true,
@@ -197,26 +197,33 @@ window.onload = function() {
     data: {
       labels: days_last_month,
       datasets: [{
-          label: "Cheers",
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          fill: true,
-          data: days_last_month.map(function(n) {
-            return data[last_month_year][last_month][n]['bits'] / 100;
-          })
-        },
-        {
-          label: "Subscribers",
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1,
-          fill: true,
-          data: days_last_month.map(function(n) {
-            return data[last_month_year][last_month][n]['subs'];
-          })
-        },
-      ]
+        label: "Cheers",
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: days_last_month.map(function(n) {
+          return data[last_month_year][last_month][n]['bits'] / 100;
+        })
+      }, {
+        label: "Subscribers",
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: days_last_month.map(function(n) {
+          return data[last_month_year][last_month][n]['subs'];
+        })
+      }, {
+        label: "Tips",
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        fill: true,
+        data: days_last_month.map(function(n) {
+          return data[last_month_year][last_month][n]['tips'];
+        })
+      }]
     },
     options: {
       responsive: true,
@@ -261,7 +268,7 @@ window.onload = function() {
     data: {
       labels: sorted_paypigs,
       datasets: [{
-        label: "Total Cheers",
+        label: "Total Donations (Cheers + Tips)",
         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
         borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
         borderWidth: 1,
@@ -274,7 +281,7 @@ window.onload = function() {
     options: {
       title: {
         display: true,
-        text: "Cheer-leaderboards (Total)",
+        text: "Leaderboards (Total)",
       },
       tooltips: {
         mode: 'index',
@@ -310,7 +317,7 @@ window.onload = function() {
     data: {
       labels: sorted_last_paypigs,
       datasets: [{
-        label: "Total Cheers",
+        label: "Total Dontations (Cheers + Tips)",
         backgroundColor: ["rgba(255, 159, 64, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
         borderColor: ["rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(255,99,132,1)", "rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(255,99,132,1)", "rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(255,99,132,1)", "rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(255,99,132,1)", "rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(255,99,132,1)", "rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(54, 162, 235, 1)", "rgba(255,99,132,1)"],
         borderWidth: 1,
@@ -323,7 +330,7 @@ window.onload = function() {
     options: {
       title: {
         display: true,
-        text: "Cheer-leaderboards (" + last_month + ")",
+        text: "Leaderboards (" + last_month + ")",
       },
       tooltips: {
         mode: 'index',
@@ -522,44 +529,46 @@ window.onload = function() {
     }
   });
 
-	var paymetonnes_chart3 = new Chart(document.getElementById("chart_paymetonnes3").getContext('2d'), {
-		type: "line",
-		data: {
-			labels: Object.keys(live_patreon).map(function(k) { return parseInt(k); }),
-			datasets: [{
-				label: "Patreon $$$",
-				backgroundColor: 'rgba(255, 206, 86, 0.2)',
-				borderColor: 'rgba(255, 206, 86, 1)',
-				borderWidth: 1,
+  var paymetonnes_chart3 = new Chart(document.getElementById("chart_paymetonnes3").getContext('2d'), {
+    type: "line",
+    data: {
+      labels: Object.keys(live_patreon).map(function(k) {
+        return parseInt(k);
+      }),
+      datasets: [{
+        label: "Patreon $$$",
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
         pointStyle: 'line',
-				data: Object.keys(live_patreon).map(function(k) {
-					return live_patreon[k]["earnings"] / 100
-				})
-			}]
-		},
-		options: {
-			responsive: true,
-			title: {
-				display: true,
-				text: "Patreon Recent"
-			},
-			scales: {
-				xAxes: [{
-					type: "time",
-					time: {
-						format: "MM/DD/YYYY HH:mm",
-						tooltipFormat: "ll HH:mm"
-					}
-				}],
-				yAxes: [{
-					ticks: {
-						beginAtZero: false,
-						callback: function(value, index, values) {
-							return '$' + value;
-						}
-					}
-				}]
-			}
-		}
-	});
+        data: Object.keys(live_patreon).map(function(k) {
+          return live_patreon[k]["earnings"] / 100
+        })
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: "Patreon Recent"
+      },
+      scales: {
+        xAxes: [{
+          type: "time",
+          time: {
+            format: "MM/DD/YYYY HH:mm",
+            tooltipFormat: "ll HH:mm"
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: false,
+            callback: function(value, index, values) {
+              return '$' + value;
+            }
+          }
+        }]
+      }
+    }
+  });
 }
