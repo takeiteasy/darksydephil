@@ -153,7 +153,7 @@ end
 month = month_names[month - 1]
 
 a, b, c, d = File.open('twitter.conf').readlines.map(&:rstrip)
-client = Twitter::Streaming::Client.new do |config|
+client = Twitter::REST::Client.new do |config|
   config.consumer_key        = a
   config.consumer_secret     = b
   config.access_token        = c
