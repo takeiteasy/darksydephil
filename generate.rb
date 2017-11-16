@@ -159,4 +159,4 @@ client = Twitter::Streaming::Client.new do |config|
   config.access_token        = c
   config.access_token_secret = d
 end
-client.update("#DSP #TheSnortReport for #{day}#{day_suffix day} #{month}, #{year}: Cheers: $#{data[year][month][day]['bits'] / 100}, Subs: $#{data[year][month][day]['subs']}, Tips: $#{data[year][month][day]['tips']}")
+client.update("#DSP #TheSnortReport for #{day}#{date_suffix day} #{month}, #{year}: Cheers: $#{data[year][month][day]['bits'] / 100}, Subs: $#{data[year][month][day]['subs']}, Tips: $#{data[year][month][day]['tips']}")
