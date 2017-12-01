@@ -153,7 +153,8 @@ window.onload = function() {
         borderWidth: 1,
         fill: true,
         data: days_last_month.map(function(n) {
-          return patreon[date_to_ts(last_month_year, last_month, n)]['earnings'];
+          var x = patreon[date_to_ts(last_month_year, last_month, n)];
+          return (typeof x === 'undefined' ? 0 : x['earnings']);
         })
       }]
     },
@@ -203,7 +204,8 @@ window.onload = function() {
         borderWidth: 1,
         fill: true,
         data: days_last_month.map(function(n) {
-          return data[last_month_year][last_month][n]['bits'] / 100;
+          var x = data[last_month_year][last_month][n];
+          return (typeof x === 'undefined' ? 0 : x['bits'] / 100);
         })
       }, {
         label: "Subscribers",
@@ -212,7 +214,8 @@ window.onload = function() {
         borderWidth: 1,
         fill: true,
         data: days_last_month.map(function(n) {
-          return data[last_month_year][last_month][n]['subs'];
+          var x = data[last_month_year][last_month][n];
+          return (typeof x === 'undefined' ? 0 : x['subs']);
         })
       }, {
         label: "Tips",
@@ -221,7 +224,8 @@ window.onload = function() {
         borderWidth: 1,
         fill: true,
         data: days_last_month.map(function(n) {
-          return data[last_month_year][last_month][n]['tips'];
+          var x = data[last_month_year][last_month][n];
+          return (typeof x === 'undefined' ? 0 : x['tips']);
         })
       }]
     },
@@ -528,7 +532,7 @@ window.onload = function() {
       }
     }
   });
-  
+
   var paymetonnes_chart3 = new Chart(document.getElementById("chart_paymetonnes3").getContext('2d'), {
     type: "line",
     data: {
